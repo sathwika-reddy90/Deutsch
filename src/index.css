@@ -1,0 +1,189 @@
+@import '@fontsource-variable/nunito';
+@import '@fontsource-variable/fraunces';
+
+/*
+ * Dark, low-visibility study theme: dark cards on a dark page, moderate
+ * contrast, muted accents. Comfortable head-on, quiet from across the room.
+ */
+:root {
+  color-scheme: dark;
+
+  /* Surfaces */
+  --bg: #0d0d0f;
+  --bg-raised: #151518;
+  --surface: #18181b; /* cards, inputs, chips */
+  --surface-2: #202024; /* inner areas, buttons */
+  --surface-3: #26262b; /* hover */
+  --image-bg: #222225;
+  --border: #303036;
+  --border-card: #2d2d32;
+  --border-strong: #454047;
+
+  /* Text */
+  --text: #e8e8e8;
+  --text-strong: #e5e5e5; /* German word, headings */
+  --text-english: #d0d0d5;
+  --text-2: #a5a5ad;
+  --muted: #818189; /* ≈ #77777F, nudged to stay readable (4.5:1) on cards */
+  --placeholder: #77777f;
+  --pron: #85858c;
+
+  /* Muted copper accent */
+  --accent: #8a5026;
+  --accent-hover: #9a5b2c;
+  --accent-text: #c8925f;
+  --accent-soft: #2a1f17;
+  --accent-border: #4d3523;
+  --on-accent: #ece3da;
+
+  /* Learned: muted green */
+  --learned: #7fae92;
+  --learned-bg: #1c2a23;
+  --learned-border: #2f4a3b;
+
+  /* Grammatical gender pills (the article text is always shown too) */
+  --der: #2b4a72;
+  --die: #6e302c;
+  --das: #2c5640;
+  --on-pill: #e5e5e5;
+
+  /* German flag, muted */
+  --flag-black: #2e2e33;
+  --flag-red: #8f2b27;
+  --flag-gold: #a9862f;
+
+  --radius-card: 24px;
+  --radius-panel: 16px;
+  --shadow-card:
+    0 1px 2px rgb(0 0 0 / 0.4),
+    0 12px 28px -14px rgb(0 0 0 / 0.7);
+  --shadow-card-lift:
+    0 2px 4px rgb(0 0 0 / 0.45),
+    0 18px 36px -16px rgb(0 0 0 / 0.8);
+
+  --font-body: 'Nunito Variable', 'Nunito', ui-rounded, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Fraunces Variable', 'Fraunces', Georgia, serif;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --page-gutter: clamp(16px, 4vw, 40px);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  background: var(--bg);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--font-body);
+  color: var(--text);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  background: var(--bg);
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: var(--accent-text);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent-text);
+  outline-offset: 3px;
+}
+
+kbd {
+  font-family: inherit;
+  font-size: 0.8em;
+  font-weight: 600;
+  padding: 0.1em 0.45em;
+  border-radius: 6px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text-2);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  left: 16px;
+  top: -100px;
+  z-index: 100;
+  padding: 10px 16px;
+  border-radius: 12px;
+  background: var(--surface-2);
+  border: 1px solid var(--border-strong);
+  color: var(--text-strong);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  top: 16px;
+}
+
+.german-flag {
+  display: inline-flex;
+  flex-direction: column;
+  width: 1.25em;
+  height: 0.8em;
+  border-radius: 2px;
+  overflow: hidden;
+  vertical-align: -0.05em;
+  opacity: 0.85;
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 0.06);
+}
+
+.german-flag > span {
+  flex: 1;
+}
+
+.german-flag > span:nth-child(1) {
+  background: var(--flag-black);
+}
+.german-flag > span:nth-child(2) {
+  background: var(--flag-red);
+}
+.german-flag > span:nth-child(3) {
+  background: var(--flag-gold);
+}
+
+/* Phones: cards are calc(100vw - 40px) wide */
+@media (max-width: 640px) {
+  :root {
+    --page-gutter: 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html:focus-within {
+    scroll-behavior: auto;
+  }
+}

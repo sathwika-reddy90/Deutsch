@@ -1,0 +1,101 @@
+.categories__list {
+  /* Positioned so the chips' visually-hidden text stays inside the scroller
+     (otherwise it widens the page on phones). */
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 12px 0 10px;
+  border: 1px solid var(--border-card);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text-2);
+  font-weight: 600;
+  font-size: 0.88rem;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s var(--ease-out),
+    box-shadow 0.2s ease;
+}
+
+.chip:hover {
+  border-color: #3c3c43;
+  background: #1d1d21;
+  color: var(--text-english);
+  transform: translateY(-1px);
+}
+
+.chip__icon {
+  font-size: 1.05rem;
+  filter: saturate(0.55) brightness(0.8);
+  line-height: 1;
+}
+
+.chip__count {
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.chip.is-selected {
+  background: var(--accent-soft);
+  border-color: var(--accent-border);
+  color: var(--accent-text);
+}
+
+/* Non-colour indicator for the selected category */
+.chip.is-selected::after {
+  content: '✓';
+  margin-left: -2px;
+  font-size: 0.85rem;
+}
+
+.chip.is-selected .chip__count {
+  background: rgb(255 255 255 / 0.06);
+  color: var(--accent-text);
+}
+
+/* On narrow screens: one swipeable row instead of a tall wrap */
+@media (max-width: 640px) {
+  .categories {
+    margin: 0 calc(var(--page-gutter) * -1);
+  }
+
+  .categories__list {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding: 4px var(--page-gutter) 10px;
+    scroll-snap-type: x proximity;
+    scroll-padding-inline: var(--page-gutter);
+    scrollbar-width: none;
+    -webkit-mask-image: linear-gradient(90deg, #000 88%, transparent);
+    mask-image: linear-gradient(90deg, #000 88%, transparent);
+  }
+
+  .categories__list::-webkit-scrollbar {
+    display: none;
+  }
+
+  .categories__list li {
+    scroll-snap-align: start;
+  }
+}

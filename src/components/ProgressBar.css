@@ -1,0 +1,45 @@
+.progress {
+  display: grid;
+  gap: 6px;
+}
+
+.progress__caption {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 0.86rem;
+  color: var(--muted);
+}
+
+.progress__caption strong {
+  font-weight: 650;
+  color: var(--text-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.progress__track {
+  height: 6px;
+  border-radius: 999px;
+  background: #252529;
+  overflow: hidden;
+}
+
+.progress__fill {
+  height: 100%;
+  border-radius: inherit;
+  /* Current position: neutral */
+  background: #56565e;
+  transition: width 0.6s var(--ease-out);
+}
+
+/* Words learned: muted warm accent */
+.progress--green .progress__fill {
+  background: var(--accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .progress__fill {
+    transition: none;
+  }
+}

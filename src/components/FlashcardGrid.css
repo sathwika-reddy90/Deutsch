@@ -1,0 +1,28 @@
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 270px), 1fr));
+  gap: 40px 30px;
+  align-items: start;
+}
+
+/* Keep cards at physical-flashcard proportions on wide screens */
+.card-grid > .card-slot {
+  width: 100%;
+  max-width: 330px;
+  justify-self: center;
+}
+
+@media (max-width: 640px) {
+  .card-grid {
+    gap: 34px;
+  }
+
+  .card-grid > .card-slot {
+    max-width: 440px;
+  }
+}
+
+/* Speaking Practice lesson: the lesson flips and moves the cards itself. */
+.card-grid.is-locked .card-scene {
+  pointer-events: none;
+}

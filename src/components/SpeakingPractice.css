@@ -1,0 +1,138 @@
+.practice {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.practice__button {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 46px;
+  padding: 0 20px 0 16px;
+  border: 1px solid var(--accent-border);
+  border-radius: 999px;
+  background: #221a14;
+  color: var(--accent-text);
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s var(--ease-out),
+    box-shadow 0.2s ease;
+}
+
+.practice__button:hover:not(:disabled) {
+  background: #2c2118;
+  border-color: #5e4029;
+  transform: translateY(-1px);
+}
+
+.practice__button:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.practice__button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.practice__again {
+  font-size: 1rem;
+  filter: saturate(0.5) brightness(0.85);
+  line-height: 1;
+}
+
+/* ■ Stop Practice */
+.practice__button.is-running {
+  background: var(--surface-2);
+  border-color: var(--border-strong);
+  color: #d8d8dc;
+}
+
+.practice__button.is-running:hover {
+  background: var(--surface-3);
+  border-color: var(--border-strong);
+  color: #d8d8dc;
+}
+
+.practice__status {
+  display: grid;
+  justify-items: end;
+  gap: 2px;
+  min-width: 15rem;
+}
+
+.practice__line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  font-size: 0.86rem;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.practice__line--word strong {
+  font-weight: 650;
+  color: var(--text-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.practice__word {
+  color: var(--text-2);
+}
+
+.practice__line--stage {
+  color: var(--accent-text);
+  min-height: 1.4em;
+}
+
+.practice__line--done {
+  color: var(--learned);
+}
+
+.practice__progress {
+  width: 100%;
+  max-width: 15rem;
+  height: 5px;
+  margin-top: 4px;
+  border-radius: 999px;
+  background: #252529;
+  overflow: hidden;
+}
+
+.practice__progress-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: var(--accent);
+  transition: width 0.5s var(--ease-out);
+}
+
+.practice.is-complete .practice__progress-fill {
+  background: #3f6b53;
+}
+
+@media (max-width: 640px) {
+  .practice {
+    align-items: flex-start;
+  }
+
+  .practice__status {
+    justify-items: start;
+    min-width: 0;
+  }
+
+  .practice__line {
+    flex-wrap: wrap;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .practice__progress-fill {
+    transition: none;
+  }
+}

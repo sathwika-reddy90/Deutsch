@@ -1,0 +1,106 @@
+.unit-selector {
+  margin-top: 16px;
+}
+
+.unit-selector__list {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: 0;
+  padding: 4px;
+  list-style: none;
+  border: 1px solid var(--border-card);
+  border-radius: 24px;
+  background: var(--bg-raised);
+}
+
+.unit-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 14px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-2);
+  font-size: 0.8rem;
+  font-weight: 650;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.unit-tab:hover {
+  background: var(--surface-2);
+  color: var(--text-english);
+}
+
+.unit-tab.is-selected {
+  border-color: var(--accent-border);
+  background: var(--accent-soft);
+  color: var(--accent-text);
+}
+
+.unit-tab__meta {
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  font-variant-numeric: tabular-nums;
+}
+
+.unit-tab.is-selected .unit-tab__meta {
+  background: rgb(255 255 255 / 0.06);
+  color: var(--accent-text);
+}
+
+.unit-tab.is-empty:not(.is-selected) .unit-tab__name {
+  color: var(--muted);
+}
+
+@media (pointer: coarse) {
+  .unit-tab {
+    min-height: 44px;
+  }
+}
+
+/* Phones: full-width segmented control, three units per row */
+@media (max-width: 640px) {
+  .unit-selector__list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: 100%;
+  }
+
+  .unit-tab {
+    width: 100%;
+    justify-content: center;
+    gap: 5px;
+    padding: 0 6px;
+    font-size: 0.76rem;
+    letter-spacing: 0.04em;
+  }
+
+  .unit-tab__meta {
+    padding: 1px 5px;
+    font-size: 0.64rem;
+  }
+
+  /* A lone tab on the last row spans the full width; of two, the second takes the rest. */
+  .unit-selector__list > li:last-child:nth-child(3n + 1) {
+    grid-column: 1 / -1;
+  }
+
+  .unit-selector__list > li:last-child:nth-child(3n + 2) {
+    grid-column: span 2;
+  }
+}
