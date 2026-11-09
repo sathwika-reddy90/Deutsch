@@ -1,0 +1,128 @@
+/* ---------- Words in example sentences ---------- */
+
+/* Looks like plain sentence text: no layout shift, wraps like the words around it. */
+.gloss-word {
+  display: inline;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 3px;
+  background: none;
+  font: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+  text-align: inherit;
+  text-decoration: underline dotted transparent;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  cursor: help;
+  transition:
+    color 0.15s ease,
+    text-decoration-color 0.15s ease;
+}
+
+.gloss-word:hover,
+.gloss-word.is-glossed {
+  color: var(--accent-text);
+  text-decoration-color: currentColor;
+}
+
+.gloss-word:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+/* ---------- Tooltip ---------- */
+
+.word-tooltip {
+  position: fixed;
+  z-index: 1000;
+  display: grid;
+  gap: 2px;
+  max-width: min(240px, calc(100vw - 16px));
+  padding: 6px 10px 7px;
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  background: var(--bg-raised);
+  box-shadow: 0 10px 28px rgb(0 0 0 / 0.5);
+  color: var(--text-strong);
+  font-size: 0.82rem;
+  line-height: 1.3;
+  text-align: left;
+  pointer-events: none;
+  animation: word-tooltip-in 0.12s ease-out;
+}
+
+.word-tooltip.is-pinned {
+  padding-right: 30px;
+  pointer-events: auto;
+}
+
+/* Arrow pointing at the word */
+.word-tooltip::after {
+  content: '';
+  position: absolute;
+  left: var(--arrow-x);
+  width: 8px;
+  height: 8px;
+  border: 1px solid var(--border-strong);
+  background: var(--bg-raised);
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.word-tooltip--above::after {
+  bottom: -5px;
+  border-top: 0;
+  border-left: 0;
+}
+
+.word-tooltip--below::after {
+  top: -5px;
+  border-right: 0;
+  border-bottom: 0;
+}
+
+.word-tooltip__meaning {
+  font-weight: 650;
+}
+
+.word-tooltip__note {
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+.word-tooltip__close {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.word-tooltip__close:hover,
+.word-tooltip__close:focus-visible {
+  background: var(--surface-3);
+  color: var(--text-strong);
+}
+
+@keyframes word-tooltip-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .word-tooltip {
+    animation: none;
+  }
+}

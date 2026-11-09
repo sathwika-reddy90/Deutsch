@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { UnitSelector } from './components/UnitSelector';
+import { WordTooltip } from './components/WordTooltip';
 import { DEFAULT_UNIT, UNITS, wordsInUnit } from './data/vocabulary';
 import { UnitWorkspace } from './UnitWorkspace';
 
@@ -20,15 +21,18 @@ export default function App() {
   };
 
   return (
-    <UnitWorkspace
-      key={unit.number}
-      unit={unit}
-      words={words}
-      suggestedUnit={suggestedUnit}
-      onSelectUnit={selectUnit}
-      unitNav={
-        <UnitSelector units={UNITS} selected={unit.number} onSelect={selectUnit} focusSelected={refocusSelector} />
-      }
-    />
+    <>
+      <UnitWorkspace
+        key={unit.number}
+        unit={unit}
+        words={words}
+        suggestedUnit={suggestedUnit}
+        onSelectUnit={selectUnit}
+        unitNav={
+          <UnitSelector units={UNITS} selected={unit.number} onSelect={selectUnit} focusSelected={refocusSelector} />
+        }
+      />
+      <WordTooltip />
+    </>
   );
 }

@@ -1,8 +1,9 @@
 import type { ReactNode, Ref } from 'react';
 import { germanTerm, type VocabWord } from '../data/vocabulary';
-import type { SpeechMode } from '../hooks/useGermanSpeech';
+import type { SpeakingState, SpeechMode } from '../hooks/useGermanSpeech';
 import { AudioButton, AudioUnavailable } from './AudioButton';
 import { CardImage } from './CardImage';
+import { ExampleSentences } from './ExampleSentences';
 import { GermanFlag } from './GermanFlag';
 import { LearnedStamp } from './LearnedStamp';
 import { fitTextStyle } from './fitText';
@@ -16,13 +17,16 @@ interface FlashcardBackProps {
   /** Which audio button of this card is playing, if any. */
   speakingMode: SpeechMode | null;
   onSpeak: (mode: SpeechMode) => void;
+  /** Which example sentence is playing, if any. */
+  speakingSentence: SpeakingState | null;
+  onSpeakSentence: (index: number, mode: SpeechMode) => void;
   /** Listen buttons are paused while Speaking Practice runs on this card. */
   audioDisabled?: boolean;
   /** Speaking Practice status shown in place of the hint. */
   status?: ReactNode;
 }
 
-/** German side: article + word, pronunciation guide and audio. */
+/** German side: article + word, pronunciation guide, audio and example sentences. */
 export function FlashcardBack({
   word,
   hidden,
@@ -31,6 +35,8 @@ export function FlashcardBack({
   speechSupported,
   speakingMode,
   onSpeak,
+  speakingSentence,
+  onSpeakSentence,
   audioDisabled = false,
   status,
 }: FlashcardBackProps) {
@@ -93,6 +99,17 @@ export function FlashcardBack({
           )}
         </div>
       </div>
+      {word.sentences && (
+        <ExampleSentences
+          wordId={word.id}
+          sentences={word.sentences}
+          speechSupported={speechSupported}
+          speaking={speakingSentence}
+          audioDisabled={audioDisabled}
+          onSpeak={onSpeakSentence}
+          onFlip={onFlip}
+        />
+      )}
       {status ? (
         <p className="card__hint card__hint--status is-active" aria-hidden="true">
           {status}

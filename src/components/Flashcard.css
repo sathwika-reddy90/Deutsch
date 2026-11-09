@@ -33,8 +33,9 @@
 .card {
   position: relative;
   width: 100%;
-  aspect-ratio: 300 / 410;
-  max-height: 540px;
+  /* Tall enough for two example sentences on the German side. */
+  aspect-ratio: 300 / 560;
+  max-height: 660px;
   border-radius: var(--radius-card);
   perspective: 1400px;
   -webkit-tap-highlight-color: transparent;
@@ -204,8 +205,8 @@
 }
 
 .card__image--small {
-  /* Shrinks first when the German side needs room for long words. */
-  flex: 0 1 31%;
+  /* Shrinks first when the German side needs room for long words and example sentences. */
+  flex: 0 100 31%;
   min-height: 56px;
   margin: 10px 0 10px;
 }
@@ -355,6 +356,166 @@
   width: min(100%, 12.75rem);
   margin-top: 8px;
   pointer-events: auto;
+}
+
+/* ---------- Example sentences (German side) ---------- */
+
+.card__examples {
+  /* Above the flip button so it can scroll if it ever overflows; clicks still flip. */
+  position: relative;
+  z-index: 2;
+  /* Shrinks (and scrolls) only once the picture is at its minimum size (it shrinks 100× faster). */
+  flex: 0 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  margin-top: 8px;
+  padding: 8px 10px 9px;
+  border-radius: var(--radius-panel);
+  background: var(--surface-2);
+  cursor: pointer;
+}
+
+.card__examples-title {
+  margin: 0 0 5px;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.card__examples-list {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: example;
+}
+
+/* Number | German sentence | 🔊 🐢, with the English underneath. */
+.card__example {
+  display: grid;
+  grid-template-columns: 1.1em 1fr auto;
+  column-gap: 4px;
+  counter-increment: example;
+}
+
+.card__example::before {
+  content: counter(example) '.';
+  grid-row: span 2;
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--accent-text);
+}
+
+.card__example-german {
+  grid-column: 2;
+  margin: 0;
+  font-size: 0.86rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--text-strong);
+}
+
+.card__example-english {
+  grid-column: 2 / -1;
+  margin: 1px 0 0;
+  font-size: 0.76rem;
+  font-style: italic;
+  line-height: 1.3;
+  color: var(--muted);
+}
+
+/* 🔊 / 🐢 beside each sentence: small and quiet until hovered or playing. */
+.card__example-audio {
+  grid-column: 3;
+  grid-row: 1;
+  align-self: start;
+  display: flex;
+  gap: 1px;
+  margin: -2px -4px 0 0;
+}
+
+.sentence-audio {
+  display: inline-grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--accent-text);
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s var(--ease-out);
+}
+
+.sentence-audio--slow {
+  color: var(--text-2);
+}
+
+.sentence-audio:hover:not(:disabled) {
+  background: var(--surface-3);
+  border-color: var(--border-strong);
+}
+
+.sentence-audio:active:not(:disabled) {
+  transform: scale(0.92);
+}
+
+.sentence-audio:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.sentence-audio:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.sentence-audio.is-speaking {
+  background: var(--accent-soft);
+  border-color: var(--accent-border);
+  color: var(--accent-text);
+  cursor: default;
+}
+
+/* Same pulsing waves as Listen while a sentence plays; the turtle pulses slowly. */
+.sentence-audio.is-speaking .audio-button__wave {
+  animation: audio-wave 0.9s ease-in-out infinite;
+}
+
+.sentence-audio.is-speaking .audio-button__wave--2 {
+  animation-delay: 0.15s;
+}
+
+.sentence-audio--slow.is-speaking .sentence-audio__icon--emoji {
+  animation: audio-wave 1.4s ease-in-out infinite;
+}
+
+.sentence-audio__icon--emoji {
+  font-size: 0.82rem;
+  line-height: 1;
+  filter: saturate(0.5) brightness(0.85);
+}
+
+/* Bigger touch targets on phones and tablets */
+@media (pointer: coarse) {
+  .sentence-audio {
+    width: 32px;
+    height: 30px;
+  }
+
+  .card__example-audio {
+    margin-top: -5px;
+  }
 }
 
 .card__hint {
@@ -546,10 +707,6 @@
 }
 
 @media (max-width: 640px) {
-  .card {
-    aspect-ratio: 4 / 5;
-  }
-
   .card__face {
     padding: 16px 16px 12px;
   }
@@ -583,7 +740,9 @@
     transition-duration: 0.01s;
   }
 
-  .learned-pill {
+  .learned-pill,
+  .sentence-audio.is-speaking .audio-button__wave,
+  .sentence-audio--slow.is-speaking .sentence-audio__icon--emoji {
     animation: none;
   }
 }

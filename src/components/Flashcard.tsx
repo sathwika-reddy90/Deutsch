@@ -1,6 +1,6 @@
 import { memo, useEffect, useRef, type CSSProperties, type KeyboardEvent, type PointerEvent } from 'react';
 import { germanTerm, spokenText, type VocabWord } from '../data/vocabulary';
-import type { SpeechMode } from '../hooks/useGermanSpeech';
+import { SENTENCE_RATES, sentenceSpeechId, type SpeakingState, type SpeechMode } from '../hooks/useGermanSpeech';
 import { PRACTICE, type RunningPracticeState } from '../hooks/useSpeakingPractice';
 import { FlashcardBack } from './FlashcardBack';
 import { FlashcardFront } from './FlashcardFront';
@@ -20,6 +20,8 @@ interface FlashcardProps {
   dealIndex: number;
   speechSupported: boolean;
   speakingMode: SpeechMode | null;
+  /** Which of this card's example sentences is playing, if any. */
+  speakingSentence: SpeakingState | null;
   /** Speaking Practice lesson state, if this card is the word being practised. */
   practice: RunningPracticeState | null;
   onFlip: (id: string) => void;
@@ -29,7 +31,7 @@ interface FlashcardProps {
   onActivate: (id: string) => void;
   onMarkLearned: (id: string) => void;
   onUnmarkLearned: (id: string) => void;
-  onSpeak: (id: string, text: string, mode: SpeechMode) => void;
+  onSpeak: (id: string, text: string, mode: SpeechMode, rate?: number) => void;
 }
 
 /** Small deterministic tilt so cards look casually placed on a table. */
@@ -53,6 +55,7 @@ export const Flashcard = memo(function Flashcard({
   dealIndex,
   speechSupported,
   speakingMode,
+  speakingSentence,
   practice,
   onFlip,
   onUnflip,
@@ -126,6 +129,12 @@ export const Flashcard = memo(function Flashcard({
     onActivate(word.id);
     onSpeak(word.id, spokenText(word), mode);
   };
+  const listenSentence = (index: number, mode: SpeechMode) => {
+    const sentence = word.sentences?.[index];
+    if (!sentence) return;
+    onActivate(word.id);
+    onSpeak(sentenceSpeechId(word.id, index), sentence.german, mode, SENTENCE_RATES[mode]);
+  };
 
   // Enter on the English side flips the card (the flip button's own click). Enter on
   // the German side plays Listen instead of flipping back – Space still flips back.
@@ -175,9 +184,11 @@ export const Flashcard = memo(function Flashcard({
               onFlip={flip}
               speechSupported={speechSupported}
               speakingMode={speakingMode}
+              speakingSentence={speakingSentence}
               audioDisabled={isPracticing}
               status={backStatus}
               onSpeak={listen}
+              onSpeakSentence={listenSentence}
             />
           </div>
         </div>

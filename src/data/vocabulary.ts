@@ -11,7 +11,11 @@
  *   - `english` is the meaning. Alternatives separated by " / " are shown smaller.
  *   - `images` are Fluent Emoji asset names (1, 2 or 4 of them). Run
  *     `npm run fetch-images` to download any that are missing into public/vocab/.
+ *   - Two example sentences per word live in examples.ts, keyed by the word's id;
+ *     the English of each word in them comes from glossary.ts.
  */
+import { EXAMPLES, type WordGlosses } from './examples.ts';
+import { GLOSSARY } from './glossary.ts';
 
 export const CATEGORIES = ['Places', 'Travel', 'Directions', 'Time', 'Objects', 'Food', 'Other', 'Letters'] as const;
 
@@ -40,9 +44,41 @@ export interface VocabWord {
   say?: string;
   /** Speaking Practice shows the front without reading it aloud (an English voice would say the English letter name). */
   silentFront?: boolean;
+  /** Two short A1 example sentences, shown under Listen on the German side (letters have none). */
+  sentences?: ExampleSentence[];
 }
 
-type WordInput = Omit<VocabWord, 'id' | 'unit'>;
+export interface ExampleSentence {
+  german: string;
+  english: string;
+  /** The sentence split into words (with their English) and the text between them. */
+  words: SentenceToken[];
+}
+
+export interface SentenceToken {
+  text: string;
+  /** English meaning of a word in this sentence, "meaning | note"; spaces, punctuation and numbers have none. */
+  gloss?: string;
+}
+
+/** A word: letters, optionally joined by an apostrophe or hyphen ("geht's", "E-Mail"). */
+const WORD = /\p{L}+(?:['’-]\p{L}+)*/gu;
+
+/** Splits a sentence into words and the text between them; punctuation never sticks to a word. */
+export function glossSentence(german: string, overrides: WordGlosses = {}): SentenceToken[] {
+  const tokens: SentenceToken[] = [];
+  let last = 0;
+  for (const match of german.matchAll(WORD)) {
+    const word = match[0];
+    if (match.index > last) tokens.push({ text: german.slice(last, match.index) });
+    tokens.push({ text: word, gloss: overrides[word] ?? GLOSSARY[word] ?? GLOSSARY[word.toLowerCase()] });
+    last = match.index + word.length;
+  }
+  if (last < german.length) tokens.push({ text: german.slice(last) });
+  return tokens;
+}
+
+type WordInput = Omit<VocabWord, 'id' | 'unit' | 'sentences'>;
 
 export interface Unit {
   number: number;
@@ -325,6 +361,18 @@ const UNIT_4_WORDS: WordInput[] = [
   { german: 'alles', note: 'pronoun', english: 'all / everything', pronunciation: 'AHL-es', category: 'Other', images: ['Infinity'] },
   { german: 'mehr', note: 'adverb', english: 'more', pronunciation: 'mair', category: 'Other', images: ['Plus'] },
   { german: 'Stimmt.', english: "that's right / correct", pronunciation: 'shtimt', category: 'Other', images: ['Check mark button'] },
+  { article: 'das', german: 'Bild', english: 'picture', pronunciation: 'bilt', category: 'Objects', images: ['Framed picture'] },
+  { article: 'der', german: 'Einkaufswagen', english: 'shopping cart', pronunciation: 'INE-kowfs-vah-gen', category: 'Objects', images: ['Shopping cart'] },
+  { article: 'das', german: 'Wechselgeld', english: 'change (money)', pronunciation: 'VEK-sel-gelt', category: 'Objects', images: ['Coin'] },
+  { german: 'dran', note: 'adverb', english: 'your turn', pronunciation: 'drahn', category: 'Other', images: ['Backhand index pointing right'] },
+  { german: 'Sonst noch etwas?', english: 'anything else?', pronunciation: 'zonst nokh ET-vahs', category: 'Other', images: ['Red question mark'] },
+  { article: 'der', german: 'Reis', english: 'rice', pronunciation: 'rice', category: 'Food', images: ['Cooked rice'] },
+  { article: 'die', german: 'Tüte', english: 'bag', pronunciation: 'TÜ-tuh', category: 'Objects', images: ['Shopping bags'] },
+  { article: 'der', german: 'Kassenzettel', english: 'receipt', pronunciation: 'KAHS-en-tset-el', category: 'Objects', images: ['Receipt'] },
+  { german: 'Gleichfalls!', english: 'same to you', pronunciation: 'GLYKH-fahls', category: 'Other', images: ['Handshake'] },
+  { german: 'schmeckt', note: 'verb', english: 'tastes', pronunciation: 'shmekt', category: 'Other', images: ['Face savoring food'] },
+  { german: 'satt', note: 'adjective', english: 'full (not hungry)', pronunciation: 'zaht', category: 'Other', images: ['Face exhaling'] },
+  { german: 'Mahlzeit!', note: 'greeting', english: 'meal time (greeting)', pronunciation: 'MAHL-tsyte', category: 'Other', images: ['Waving hand', 'Fork and knife'] },
 ];
 
 // German letter names: [letter, as it sounds to an English speaker (shown), German spelling (spoken)].
@@ -429,7 +477,16 @@ const wordIds = (unit: number, words: WordInput[]) => {
 /** Every word of every unit. */
 export const VOCABULARY: VocabWord[] = UNIT_DEFINITIONS.flatMap(({ number, words }) => {
   const ids = wordIds(number, words);
-  return words.map((word, i) => ({ ...word, unit: number, id: ids[i] }));
+  return words.map((word, i) => ({
+    ...word,
+    unit: number,
+    id: ids[i],
+    sentences: EXAMPLES[ids[i]]?.map(([german, english, glosses]) => ({
+      german,
+      english,
+      words: glossSentence(german, glosses),
+    })),
+  }));
 });
 
 export const wordsInUnit = (unit: number) => VOCABULARY.filter((word) => word.unit === unit);

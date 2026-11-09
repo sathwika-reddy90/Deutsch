@@ -7,6 +7,7 @@ import { chromium } from 'playwright';
 import assert from 'node:assert/strict';
 import { mkdirSync } from 'node:fs';
 import { UNITS, VOCABULARY, germanTerm, spokenText, wordsInUnit } from '../src/data/vocabulary.ts';
+import { EXAMPLES } from '../src/data/examples.ts';
 
 const BASE_URL = process.env.BASE_URL ?? 'http://localhost:5173';
 const SHOTS = process.env.SHOTS_DIR;
@@ -215,6 +216,18 @@ const EXPECTED_UNIT_4 = [
   ['alles', 'all / everything'],
   ['mehr', 'more'],
   ['Stimmt.', "that's right / correct"],
+  ['das Bild', 'picture'],
+  ['der Einkaufswagen', 'shopping cart'],
+  ['das Wechselgeld', 'change (money)'],
+  ['dran', 'your turn'],
+  ['Sonst noch etwas?', 'anything else?'],
+  ['der Reis', 'rice'],
+  ['die Tüte', 'bag'],
+  ['der Kassenzettel', 'receipt'],
+  ['Gleichfalls!', 'same to you'],
+  ['schmeckt', 'tastes'],
+  ['satt', 'full (not hungry)'],
+  ['Mahlzeit!', 'meal time (greeting)'],
 ];
 
 // Alphabets: [letter, name shown on the back, German spelling the voice speaks].
@@ -367,14 +380,14 @@ const helpers = (page) => {
 
 // ============================================================ unit data
 console.log('Units – data');
-await step('data: Units 1–4 and Alphabets – 61, 68, exactly the 28 Unit 3 words, 31, A–Z', async () => {
+await step('data: Units 1–4 and Alphabets – 61, 68, exactly the 28 Unit 3 words, 43, A–Z', async () => {
   assert.deepEqual(
     UNITS.map((u) => [u.number, u.name, u.wordCount, u.tag, u.title]),
     [
       [1, 'Unit 1', 61, '61', 'German Vocabulary'],
       [2, 'Unit 2', 68, '68', 'German Vocabulary'],
       [3, 'Unit 3', 28, '28', 'German Vocabulary'],
-      [4, 'Unit 4', 31, '31', 'Guten Appetit!'],
+      [4, 'Unit 4', 43, '43', 'Guten Appetit!'],
       [0, 'Alphabets', 26, 'A–Z', 'German Alphabet'],
     ],
   );
@@ -391,8 +404,8 @@ await step('data: Units 1–4 and Alphabets – 61, 68, exactly the 28 Unit 3 wo
   assert.equal(wordsInUnit(1).length, 61);
   assert.equal(wordsInUnit(2).length, 68);
   assert.equal(wordsInUnit(3).length, 28);
-  assert.equal(VOCABULARY.length, 61 + 68 + 28 + 31 + 26, 'no duplicated words');
-  assert.equal(new Set(VOCABULARY.map((w) => w.id)).size, 61 + 68 + 28 + 31 + 26, 'unique ids');
+  assert.equal(VOCABULARY.length, 61 + 68 + 28 + 43 + 26, 'no duplicated words');
+  assert.equal(new Set(VOCABULARY.map((w) => w.id)).size, 61 + 68 + 28 + 43 + 26, 'unique ids');
   for (const [n, expected] of [
     [1, EXPECTED_UNIT_1],
     [2, EXPECTED_UNIT_2],
@@ -409,7 +422,17 @@ await step('data: Units 1–4 and Alphabets – 61, 68, exactly the 28 Unit 3 wo
     assert.ok(words.every((w) => w.pronunciation && w.images.length), `every Unit ${n} word has a guide and a picture`);
   }
   assert.equal(new Set(wordsInUnit(1).map(germanTerm)).size, 61, 'no duplicate German terms in Unit 1');
-  assert.equal(new Set(wordsInUnit(4).map(germanTerm)).size, 31, 'no duplicate German terms in Unit 4');
+  assert.equal(new Set(wordsInUnit(4).map(germanTerm)).size, 43, 'no duplicate German terms in Unit 4');
+  // Example sentences: exactly two (German + English) for every word of Units 1–4, none for letters.
+  const vocabWords = VOCABULARY.filter((w) => w.unit !== 0);
+  assert.equal(vocabWords.length, 61 + 68 + 28 + 43);
+  for (const w of vocabWords) {
+    assert.equal(w.sentences?.length, 2, `${w.id} has two example sentences`);
+    assert.ok(w.sentences.every((s) => s.german.trim() && s.english.trim()), `${w.id}: German and English for both`);
+  }
+  assert.ok(letters.every((w) => !w.sentences), 'letters have no example sentences');
+  assert.equal(new Set(vocabWords.flatMap((w) => w.sentences.map((s) => s.german))).size, 400, 'no example sentence repeated');
+  assert.deepEqual(Object.keys(EXAMPLES).filter((id) => !VOCABULARY.some((w) => w.id === id)), [], 'every example entry belongs to a word');
   // Only the pronouns sie (she) / sie (they) / Sie (you) share German in Unit 2.
   assert.deepEqual(
     wordsInUnit(2).filter((w) => w.id.startsWith('u2-sie')).map((w) => w.id),
@@ -1099,7 +1122,7 @@ await step('one page with a unit selector; Unit 3 selected by default', async ()
   const tabs = p.locator('.unit-selector .unit-tab');
   assert.deepEqual(
     (await tabs.allInnerTexts()).map((t) => t.replace(/\s+/g, ' ').trim().toUpperCase()),
-    ['UNIT 1 61', 'UNIT 2 68', 'UNIT 3 28', 'UNIT 4 31', 'ALPHABETS A–Z'],
+    ['UNIT 1 61', 'UNIT 2 68', 'UNIT 3 28', 'UNIT 4 43', 'ALPHABETS A–Z'],
   );
   assert.equal(await p.getByRole('button', { name: 'Unit 3, 28 words' }).getAttribute('aria-pressed'), 'true');
   assert.equal(await p.locator('.unit__label').innerText(), 'UNIT 3');
@@ -1177,7 +1200,7 @@ await step('progress saved before units existed is kept (moved to Unit 3)', asyn
 const FILLED_UNITS = [
   { n: 1, expected: EXPECTED_UNIT_1, counts: { Places: 13, Travel: 2, Directions: 1, Time: 2, Objects: 8, Food: 5, Other: 30 } },
   { n: 2, expected: EXPECTED_UNIT_2, counts: { Places: 8, Travel: 3, Directions: 4, Time: 10, Objects: 7, Food: 1, Other: 35 } },
-  { n: 4, expected: EXPECTED_UNIT_4, counts: { Food: 24, Other: 7 } },
+  { n: 4, expected: EXPECTED_UNIT_4, counts: { Objects: 5, Food: 25, Other: 13 } },
 ];
 const openUnit = async (n, options) => {
   const p = await openApp({ init: FAKE_SPEECH, ...options });
@@ -1263,7 +1286,15 @@ for (const { n, expected, counts } of FILLED_UNITS) {
             const term = face.querySelector('.term').getBoundingClientRect();
             const audio = face.querySelector('.card__audio').getBoundingClientRect();
             const hint = face.querySelector('.card__hint').getBoundingClientRect();
-            return term.top < img.bottom + 2 || audio.bottom > hint.top + 6;
+            // Example sentences sit between the audio buttons and the hint, fully shown (no scrolling).
+            const examples = face.querySelector('.card__examples');
+            const ex = examples?.getBoundingClientRect();
+            return (
+              term.top < img.bottom + 2 ||
+              audio.bottom > hint.top + 6 ||
+              hint.bottom > face.getBoundingClientRect().bottom ||
+              (examples && (audio.bottom > ex.top || ex.bottom > hint.top + 6 || examples.scrollHeight > examples.clientHeight + 1))
+            );
           })
           .map((face) => face.querySelector('.term').textContent),
       }), vp.width);
@@ -1482,9 +1513,9 @@ await step('Unit 4: "Guten Appetit!"; flips English → German; Listen speaks um
   await p.context().close();
 });
 
-await step('Unit 4: one click practises exactly its 31 words (English ×1 → German ×5) – nothing from other units', async () => {
+await step('Unit 4: one click practises exactly its 43 words (English ×1 → German ×5) – nothing from other units', async () => {
   const p = await openUnit(4, { initArg: { autoFinishMs: 10 } });
-  assert.match(await p.getByTestId('practice-status').innerText(), /31 words shown · English once, German 5×/);
+  assert.match(await p.getByTestId('practice-status').innerText(), /43 words shown · English once, German 5×/);
   const t0 = Date.now();
   await p.locator('.practice__button').click();
   await p.waitForFunction(
@@ -1502,7 +1533,7 @@ await step('Unit 4: one click practises exactly its 31 words (English ×1 → Ge
     ]),
     'Unit 4 words only, in order',
   );
-  assert.match((await p.getByTestId('practice-status').textContent()).replace(/\s+/g, ' '), /31 \/ 31 words completed/);
+  assert.match((await p.getByTestId('practice-status').textContent()).replace(/\s+/g, ' '), /43 \/ 43 words completed/);
   await p.context().close();
 });
 
@@ -1511,7 +1542,7 @@ await step('Unit 4: search, Food / Other filters, shuffle, reset and progress wo
   await p.evaluate(() => localStorage.clear());
   await p.reload();
   await p.waitForSelector('.card');
-  await p.getByRole('button', { name: 'Unit 4, 31 words' }).click();
+  await p.getByRole('button', { name: 'Unit 4, 43 words' }).click();
   const terms = () => p.locator('.term').allTextContents();
   await p.getByRole('searchbox').fill('saft');
   assert.deepEqual(await terms(), ['der Orangensaft', 'der Apfelsaft']);
@@ -1521,9 +1552,9 @@ await step('Unit 4: search, Food / Other filters, shuffle, reset and progress wo
   assert.deepEqual(await terms(), ['der Orangensaft', 'der Apfelsaft'], 'English search');
   await p.getByRole('searchbox').fill('');
   await p.locator('.chip', { hasText: 'Other' }).click();
-  assert.deepEqual(await terms(), ['das Gespräch', 'die Vorlieben', 'Das ist alles.', 'kaufen', 'alles', 'mehr', 'Stimmt.']);
+  assert.deepEqual(await terms(), ['das Gespräch', 'die Vorlieben', 'Das ist alles.', 'kaufen', 'alles', 'mehr', 'Stimmt.', 'dran', 'Sonst noch etwas?', 'Gleichfalls!', 'schmeckt', 'satt', 'Mahlzeit!']);
   await p.locator('.chip', { hasText: 'Food' }).click();
-  assert.equal(await p.locator('.card-slot').count(), 24);
+  assert.equal(await p.locator('.card-slot').count(), 25);
   await p.locator('.chip', { hasText: 'All Words' }).click();
   const original = await terms();
   assert.deepEqual(original, EXPECTED_UNIT_4.map(([g]) => g));
@@ -1531,22 +1562,282 @@ await step('Unit 4: search, Food / Other filters, shuffle, reset and progress wo
   await p.waitForTimeout(300);
   const shuffled = await terms();
   assert.notDeepEqual(shuffled, original, 'order changed');
-  assert.deepEqual([...shuffled].sort(), [...original].sort(), 'same 31 Unit 4 words');
+  assert.deepEqual([...shuffled].sort(), [...original].sort(), 'same 43 Unit 4 words');
   await p.getByRole('button', { name: 'Mark der Käse as learned' }).click();
-  assert.match(await p.locator('.progress--green .progress__caption').innerText(), /1 \/ 31 words learned/);
+  assert.match(await p.locator('.progress--green .progress__caption').innerText(), /1 \/ 43 words learned/);
   await p.getByRole('button', { name: 'Unit 3, 28 words' }).click();
   assert.match(await p.locator('.progress--green .progress__caption').innerText(), /0 \/ 28 words learned/);
   assert.equal(await p.locator('.card-slot').count(), 28);
-  await p.getByRole('button', { name: 'Unit 4, 31 words' }).click();
-  assert.match(await p.locator('.progress--green .progress__caption').innerText(), /1 \/ 31 words learned/);
+  await p.getByRole('button', { name: 'Unit 4, 43 words' }).click();
+  assert.match(await p.locator('.progress--green .progress__caption').innerText(), /1 \/ 43 words learned/);
   p.once('dialog', (d) => d.accept());
   await p.getByRole('button', { name: 'Reset order and progress' }).click();
   await p.waitForTimeout(300);
-  assert.match(await p.locator('.progress--green .progress__caption').innerText(), /0 \/ 31 words learned/);
+  assert.match(await p.locator('.progress--green .progress__caption').innerText(), /0 \/ 43 words learned/);
   assert.deepEqual(await terms(), original, 'reset restores the order');
   const stored = JSON.parse(await p.evaluate(() => localStorage.getItem('deutsch-lernen:learned')) ?? '[]');
   assert.ok(!stored.some((id) => id.startsWith('u4-')), 'Unit 4 progress cleared');
   await p.context().close();
+});
+
+// ================================================== example sentences
+console.log('Example sentences');
+await step('Example sentences: German side shows the word’s two sentences + English under Listen; Listen still says the word; clicking the English flips back', async () => {
+  const p = await openApp({ init: FAKE_SPEECH });
+  const hp = helpers(p);
+  for (const id of ['u1-koennen-sie-helfen', 'u2-sie-they', 'u3-das-meer', 'u4-der-kassenzettel']) {
+    const word = VOCABULARY.find((w) => w.id === id);
+    const words = wordsInUnit(word.unit);
+    await p.getByRole('button', { name: `Unit ${word.unit}, ${words.length} words` }).click();
+    await p.waitForSelector(`.card-slot[data-unit="${word.unit}"]`);
+    const i = words.indexOf(word);
+    const back = hp.slot(i).locator('.card__face--back');
+    await hp.slot(i).evaluate((el) => el.scrollIntoView({ block: 'center' }));
+    assert.equal(await hp.slot(i).locator('.card__face--front .card__examples').count(), 0, 'English side has no sentences');
+    await hp.frontFlip(i).click();
+    await p.waitForTimeout(800);
+    assert.equal(await back.locator('.card__examples-title').textContent(), 'Example Sentences');
+    assert.deepEqual(await back.locator('.card__example-german').allTextContents(), word.sentences.map((s) => s.german), id);
+    assert.deepEqual(await back.locator('.card__example-english').allTextContents(), word.sentences.map((s) => s.english), id);
+    assert.equal(await back.locator('.card__example-german').first().getAttribute('lang'), 'de');
+    const [audio, examples] = await Promise.all([back.locator('.card__audio').boundingBox(), back.locator('.card__examples').boundingBox()]);
+    assert.ok(examples.y >= audio.y + audio.height, 'sentences sit below Listen / Slow Listen');
+    await hp.listen(i).click();
+    await p.waitForTimeout(60);
+    const spoken = (await hp.speechCalls()).filter((c) => c.type === 'speak').at(-1);
+    assert.equal(spoken.text, germanTerm(word), 'Listen says the word, not a sentence');
+    await p.evaluate(() => window.__finishSpeech());
+    await back.locator('.card__example-english').first().click();
+    await p.waitForTimeout(800);
+    assert.equal(await hp.flipped(i), false, 'clicking a translation flips the card back');
+  }
+  await p.context().close();
+});
+
+await step('Sentence audio: every sentence has 🔊 + 🐢 (de-DE, 0.9 / 0.7); one voice at a time; repeat clicks ignored; never flips', async () => {
+  const p = await openApp({ init: FAKE_SPEECH });
+  const hp = helpers(p);
+  // Every sentence of every unit has its own pair of buttons, labelled with that sentence.
+  for (const n of [1, 2, 3, 4]) {
+    const words = wordsInUnit(n);
+    await p.getByRole('button', { name: `Unit ${n}, ${words.length} words` }).click();
+    await p.waitForSelector(`.card-slot[data-unit="${n}"]`);
+    const labels = await p.locator('.card__face--back .sentence-audio').evaluateAll((els) => els.map((el) => el.getAttribute('aria-label')));
+    assert.deepEqual(
+      labels,
+      words.flatMap((w) => w.sentences.flatMap((s) => [`Listen to German sentence: ${s.german}`, `Listen slowly to German sentence: ${s.german}`])),
+      `Unit ${n}: 🔊 and 🐢 for each of its ${words.length * 2} sentences`,
+    );
+  }
+  const word = VOCABULARY.find((w) => w.id === 'u4-der-kassenzettel');
+  const i = wordsInUnit(4).indexOf(word);
+  const back = hp.slot(i).locator('.card__face--back');
+  const [normal1, slow1, normal2, slow2] = await back.locator('.sentence-audio').all();
+  const speaks = async () => (await hp.speechCalls()).filter((c) => c.type === 'speak');
+  await hp.slot(i).evaluate((el) => el.scrollIntoView({ block: 'center' }));
+  await hp.frontFlip(i).click();
+  await p.waitForTimeout(800);
+  assert.equal(await normal1.getAttribute('title'), 'Listen to German sentence');
+
+  await normal1.click();
+  await p.waitForTimeout(100);
+  let last = (await speaks()).at(-1);
+  assert.deepEqual([last.text, last.lang, last.voice, last.rate], [word.sentences[0].german, 'de-DE', 'Anna', 0.9], 'normal speed');
+  assert.match(await normal1.getAttribute('class'), /is-speaking/);
+  assert.equal(await hp.flipped(i), true, 'the speaker does not flip the card');
+  const count = (await speaks()).length;
+  await normal1.click();
+  await normal1.click();
+  await p.waitForTimeout(150);
+  assert.equal((await speaks()).length, count, 'repeat clicks while playing start nothing new');
+
+  // Another sentence (slow) interrupts the first: cancel first, then speak – never two at once.
+  await slow2.click();
+  await p.waitForTimeout(150);
+  last = (await speaks()).at(-1);
+  assert.deepEqual([last.text, last.lang, last.voice, last.rate], [word.sentences[1].german, 'de-DE', 'Anna', 0.7], 'slow speed, same voice');
+  assert.ok((await speaks()).every((c) => !c.speakingAtCall), 'no overlapping speech');
+  assert.doesNotMatch(await normal1.getAttribute('class'), /is-speaking/);
+  assert.match(await slow2.getAttribute('class'), /is-speaking/);
+  await p.evaluate(() => window.__finishSpeech());
+  await p.waitForTimeout(100);
+  assert.equal(await back.locator('.sentence-audio.is-speaking').count(), 0, 'feedback ends with the speech');
+
+  // The word's own Listen / Slow Listen are unchanged, and also stop a sentence.
+  await slow1.click();
+  await p.waitForTimeout(100);
+  await hp.listen(i).click();
+  await p.waitForTimeout(150);
+  last = (await speaks()).at(-1);
+  assert.deepEqual([last.text, last.rate], ['der Kassenzettel', 0.85], 'Listen still says the word at its own speed');
+  assert.equal(await back.locator('.sentence-audio.is-speaking').count(), 0);
+  await p.evaluate(() => window.__finishSpeech());
+  // Keyboard: Enter on a sentence button plays it and keeps the card on the German side.
+  await normal2.focus();
+  await p.keyboard.press('Enter');
+  await p.waitForTimeout(150);
+  assert.equal((await speaks()).at(-1).text, word.sentences[1].german, 'Enter plays the sentence');
+  assert.equal(await hp.flipped(i), true);
+  await p.context().close();
+
+  // Touch: tapping a sentence speaker plays it without flipping the card back.
+  const m = await openApp({ init: FAKE_SPEECH, viewport: { width: 390, height: 844 }, mobile: true });
+  const mh = helpers(m);
+  await mh.frontFlip(0).tap();
+  await m.waitForTimeout(800);
+  const tapTarget = mh.slot(0).locator('.card__face--back .sentence-audio').first();
+  const box = await tapTarget.boundingBox();
+  assert.ok(box.width >= 30 && box.height >= 28, `touch target ${box.width}×${box.height}`);
+  await tapTarget.tap();
+  await m.waitForTimeout(150);
+  assert.equal((await mh.speechCalls()).filter((c) => c.type === 'speak').at(-1).text, wordsInUnit(3)[0].sentences[0].german);
+  assert.equal(await mh.flipped(0), true, 'tap on the speaker keeps the German side');
+  await m.context().close();
+});
+
+await step('Word meanings: hover / focus / tap any sentence word for its English; punctuation excluded; never flips or speaks', async () => {
+  // Data: every word of every sentence has its meaning (punctuation and numbers are not words).
+  const sentences = VOCABULARY.flatMap((w) => w.sentences ?? []);
+  for (const s of sentences) {
+    assert.equal(s.words.map((t) => t.text).join(''), s.german, 'tokens rebuild the sentence');
+    for (const t of s.words) {
+      if (/\p{L}/u.test(t.text)) assert.ok(t.gloss?.trim(), `“${t.text}” in “${s.german}” has a meaning`);
+      else assert.equal(t.gloss, undefined, `“${t.text}” is not a word`);
+    }
+  }
+  for (const [de, , glosses] of Object.values(EXAMPLES).flat()) {
+    const words = sentences.find((s) => s.german === de).words.map((t) => t.text);
+    for (const word of Object.keys(glosses ?? {})) assert.ok(words.includes(word), `override “${word}” is in “${de}”`);
+  }
+
+  const p = await openApp({ init: FAKE_SPEECH });
+  const hp = helpers(p);
+  const tooltip = p.locator('#word-gloss');
+  // Real mouse moves: locator.hover() may scroll the clipped card face, which (rightly) closes the tooltip.
+  const hoverAt = async (locator) => {
+    const box = await locator.boundingBox();
+    await p.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+  };
+  // Every word on every card is a word button with only letters in it.
+  for (const n of [1, 2, 3, 4]) {
+    const words = wordsInUnit(n);
+    await p.getByRole('button', { name: `Unit ${n}, ${words.length} words` }).click();
+    await p.waitForSelector(`.card-slot[data-unit="${n}"]`);
+    const texts = await p.locator('.card__face--back .gloss-word').allTextContents();
+    assert.equal(texts.length, words.flatMap((w) => w.sentences.flatMap((s) => s.words.filter((t) => t.gloss))).length, `Unit ${n}: every word`);
+    assert.ok(texts.every((t) => /^\p{L}+(?:['’-]\p{L}+)*$/u.test(t)), `Unit ${n}: no punctuation inside a word`);
+  }
+  await p.getByRole('button', { name: 'Unit 3, 28 words' }).click();
+  const i = wordsInUnit(3).findIndex((w) => w.id === 'u3-die-dinge');
+  const back = hp.slot(i).locator('.card__face--back');
+  const word = (text, n = 0) => back.locator('.gloss-word').filter({ hasText: new RegExp(`^${text}$`) }).nth(n);
+  await hp.slot(i).evaluate((el) => el.scrollIntoView({ block: 'center' }));
+  await hp.frontFlip(i).click();
+  await p.waitForTimeout(800);
+  const before = (await hp.speechCalls()).length;
+
+  // Hover: “Ich kaufe viele Dinge.” – word by word, the tooltip sits above the word.
+  for (const [text, meaning] of [['Ich', 'I'], ['kaufe', 'am buying / buy'], ['viele', 'many'], ['Dinge', 'things']]) {
+    await hoverAt(word(text));
+    await p.waitForTimeout(80);
+    assert.equal(await tooltip.locator('.word-tooltip__meaning').textContent(), meaning, `hover ${text}`);
+    const [w, t] = await Promise.all([word(text).boundingBox(), tooltip.boundingBox()]);
+    assert.ok(t.y + t.height <= w.y, `${text}: tooltip above the word`);
+    assert.ok(t.x >= 0 && t.x + t.width <= 1440, `${text}: tooltip inside the viewport`);
+    assert.equal(await word(text).getAttribute('aria-describedby'), 'word-gloss');
+  }
+  assert.equal(await tooltip.locator('.word-tooltip__note').count(), 0, '“Dinge” needs no grammar note');
+  // Second sentence: “dem” explains the dative.
+  await hoverAt(word('dem'));
+  await p.waitForTimeout(80);
+  assert.equal(await tooltip.locator('.word-tooltip__meaning').textContent(), 'the');
+  assert.match(await tooltip.locator('.word-tooltip__note').textContent(), /dative/);
+  // Leaving the word hides it (staying on the card, which would flip back if left); clicking a word neither flips nor pins.
+  await back.locator('.card__examples-title').hover();
+  await p.waitForTimeout(80);
+  assert.equal(await tooltip.count(), 0, 'hidden after the cursor leaves');
+  await word('Tisch').click();
+  await p.waitForTimeout(300);
+  assert.equal(await hp.flipped(i), true, 'clicking a word does not flip the card');
+  assert.equal((await hp.speechCalls()).length, before, 'hovering / clicking words speaks nothing');
+
+  // Keyboard: Tab from Slow Listen reaches the words; Enter pins, Escape closes.
+  await hp.slowListen(i).focus();
+  await p.keyboard.press('Tab');
+  assert.equal(await tooltip.locator('.word-tooltip__meaning').textContent(), 'I', 'focus shows the meaning');
+  await p.keyboard.press('Tab');
+  assert.equal(await tooltip.locator('.word-tooltip__meaning').textContent(), 'am buying / buy');
+  await p.keyboard.press('Enter');
+  assert.equal(await tooltip.locator('.word-tooltip__close').count(), 1, 'Enter keeps it open');
+  assert.equal(await hp.flipped(i), true, 'Enter on a word does not flip the card');
+  await p.keyboard.press('Escape');
+  assert.equal(await tooltip.count(), 0, 'Escape closes it');
+
+  // Context: the same word means what it means in its sentence.
+  for (const [id, text, meaning] of [
+    ['u2-warten', 'auf', 'for'],
+    ['u2-sie-she', 'Sie', 'she'],
+    ['u2-sie-they', 'Sie', 'they'],
+    ['u2-sie-you-formal', 'Sie', 'you'],
+    ['u4-das-mittagessen', 'zum', 'for'],
+  ]) {
+    const w = VOCABULARY.find((v) => v.id === id);
+    await p.getByRole('button', { name: `Unit ${w.unit}, ${wordsInUnit(w.unit).length} words` }).click();
+    const k = wordsInUnit(w.unit).indexOf(w);
+    await hp.slot(k).evaluate((el) => el.scrollIntoView({ block: 'center' }));
+    await hp.frontFlip(k).click();
+    await p.waitForTimeout(800);
+    const target = hp.slot(k).locator('.card__face--back .gloss-word').filter({ hasText: new RegExp(`^${text}$`) }).first();
+    await hoverAt(target);
+    await p.waitForTimeout(80);
+    assert.equal(await tooltip.locator('.word-tooltip__meaning').textContent(), meaning, `${id}: ${text}`);
+    await p.mouse.move(5, 5);
+  }
+  // Sentence audio still plays the whole sentence.
+  await p.getByRole('button', { name: 'Unit 3, 28 words' }).click();
+  await hp.slot(i).evaluate((el) => el.scrollIntoView({ block: 'center' }));
+  await hp.frontFlip(i).click();
+  await p.waitForTimeout(800);
+  await back.locator('.sentence-audio--normal').first().click();
+  await p.waitForTimeout(150);
+  assert.equal((await hp.speechCalls()).filter((c) => c.type === 'speak').at(-1).text, 'Ich kaufe viele Dinge.');
+  await p.context().close();
+
+  // Touch: tap shows it until another word, the ×, or a tap elsewhere – which doesn't flip the card.
+  const m = await openApp({ init: FAKE_SPEECH, viewport: { width: 390, height: 844 }, mobile: true });
+  const mh = helpers(m);
+  const mt = m.locator('#word-gloss');
+  // Taps at the element's position: locator.tap() may scroll the clipped card face, which closes the tooltip.
+  const tapAt = async (locator) => {
+    const box = await locator.boundingBox();
+    await m.touchscreen.tap(box.x + box.width / 2, box.y + box.height / 2);
+  };
+  const mword = (text) => mh.slot(i).locator('.card__face--back .gloss-word').filter({ hasText: new RegExp(`^${text}$`) }).first();
+  await mh.slot(i).evaluate((el) => el.scrollIntoView({ block: 'center' }));
+  await mh.frontFlip(i).tap();
+  await m.waitForTimeout(800);
+  await tapAt(mword('Dinge'));
+  await m.waitForTimeout(150);
+  assert.equal(await mt.locator('.word-tooltip__meaning').textContent(), 'things', 'tap shows the meaning');
+  assert.equal(await mh.flipped(i), true, 'tapping a word keeps the German side');
+  await m.waitForTimeout(400);
+  assert.equal(await mt.count(), 1, 'stays open after the tap');
+  await tapAt(mword('viele'));
+  await m.waitForTimeout(150);
+  assert.equal(await mt.locator('.word-tooltip__meaning').textContent(), 'many', 'another word replaces it');
+  await tapAt(mt.locator('.word-tooltip__close'));
+  await m.waitForTimeout(150);
+  assert.equal(await mt.count(), 0, '× closes it');
+  await tapAt(mword('Tisch'));
+  await m.waitForTimeout(150);
+  await tapAt(mh.slot(i).locator('.card__face--back .card__example-english').nth(1));
+  await m.waitForTimeout(800);
+  assert.equal(await mt.count(), 0, 'a tap elsewhere closes it');
+  assert.equal(await mh.flipped(i), true, '…without flipping the card');
+  await tapAt(mh.slot(i).locator('.card__face--back .card__example-english').nth(1));
+  await m.waitForTimeout(800);
+  assert.equal(await mh.flipped(i), false, 'the next tap flips as usual');
+  await m.context().close();
 });
 
 // ========================================================== Alphabets
@@ -1839,7 +2130,7 @@ await step('Enter does nothing to the cards while Speaking Practice runs', async
 for (const [n, label, first] of [
   [1, 'Unit 1, 61 words', 'das Butterbrot'],
   [2, 'Unit 2, 68 words', 'die Arbeit'],
-  [4, 'Unit 4, 31 words', 'die Mahlzeit'],
+  [4, 'Unit 4, 43 words', 'die Mahlzeit'],
   [0, 'Alphabets, 26 letters', 'Ah'],
 ]) {
   await step(`Enter → reveal, Enter → Listen also in ${label.split(',')[0]} (says “${first}”)`, async () => {
@@ -1864,7 +2155,7 @@ const TEST_UNITS = [
   { n: 1, label: 'Unit 1, 61 words', name: 'Unit 1' },
   { n: 2, label: 'Unit 2, 68 words', name: 'Unit 2' },
   { n: 3, label: 'Unit 3, 28 words', name: 'Unit 3' },
-  { n: 4, label: 'Unit 4, 31 words', name: 'Unit 4' },
+  { n: 4, label: 'Unit 4, 43 words', name: 'Unit 4' },
   { n: 0, label: 'Alphabets, 26 letters', name: 'Alphabets' },
 ];
 const byId = new Map(VOCABULARY.map((w) => [w.id, w]));
@@ -1972,7 +2263,7 @@ await step('every unit has its own test: typed answers only, Quick 10 / Standard
 
 await step('test Enter: next question only – empty box or held Enter never skips, last question never submits, no card actions', async () => {
   const p = await openApp({ init: FAKE_SPEECH });
-  await openTest(p, 'Unit 4, 31 words');
+  await openTest(p, 'Unit 4, 43 words');
   await p.getByRole('button', { name: /Quick Test/ }).click();
   const caption = () => p.locator('.test .progress__caption').innerText();
   await p.keyboard.press('Enter');
@@ -2030,11 +2321,11 @@ await step('results: totals, correct / incorrect, score and % are exact; every a
   const p = await openApp({ init: FAKE_SPEECH });
   await p.evaluate(() => localStorage.clear());
   await p.reload();
-  await openTest(p, 'Unit 4, 31 words');
+  await openTest(p, 'Unit 4, 43 words');
   await p.getByRole('button', { name: /Full Test/ }).click();
   const typed = [];
   let expectedCorrect = 0;
-  for (let i = 0; i < 31; i++) {
+  for (let i = 0; i < 43; i++) {
     const { kind, word } = await currentQuestion(p);
     const right = rightAnswer(kind, word);
     let answer;
@@ -2045,33 +2336,33 @@ await step('results: totals, correct / incorrect, score and % are exact; every a
     }
     typed.push({ answer: answer.trim(), right, correct: i % 4 !== 3, kind });
     await p.locator('.test-question input').fill(answer);
-    if (i < 30) await p.keyboard.press('Enter');
+    if (i < 42) await p.keyboard.press('Enter');
   }
   await p.getByRole('button', { name: 'Submit Test' }).click();
   const results = p.getByTestId('test-results');
   await results.waitFor();
   const stat = (name) => results.locator(`[data-stat="${name}"]`).innerText();
-  const percent = Math.round((expectedCorrect / 31) * 100);
-  assert.equal(await stat('total'), '31');
+  const percent = Math.round((expectedCorrect / 43) * 100);
+  assert.equal(await stat('total'), '43');
   assert.equal(await stat('correct'), String(expectedCorrect));
-  assert.equal(await stat('incorrect'), String(31 - expectedCorrect));
-  assert.equal(await stat('score'), `${expectedCorrect} / 31 · ${percent}%`);
-  assert.match(await results.locator('.test-results__verdict').innerText(), expectedCorrect / 31 >= 0.8 ? /Passed/ : /Not passed yet/);
+  assert.equal(await stat('incorrect'), String(43 - expectedCorrect));
+  assert.equal(await stat('score'), `${expectedCorrect} / 43 · ${percent}%`);
+  assert.match(await results.locator('.test-results__verdict').innerText(), expectedCorrect / 43 >= 0.8 ? /Passed/ : /Not passed yet/);
   const items = results.locator('.test-review__item');
-  assert.equal(await items.count(), 31);
-  for (let i = 0; i < 31; i++) {
+  assert.equal(await items.count(), 43);
+  for (let i = 0; i < 43; i++) {
     const item = items.nth(i);
     assert.equal(await item.getAttribute('data-correct'), String(typed[i].correct), `question ${i + 1} marked`);
     assert.equal(await item.locator('.test-review__answer').innerText(), typed[i].answer, `question ${i + 1} your answer`);
   }
-  assert.equal(await results.locator('.test-review__item.is-wrong').count(), 31 - expectedCorrect);
-  assert.equal(await results.getByTestId('practise-again').locator('li').count(), 31 - expectedCorrect, 'words to practise again');
+  assert.equal(await results.locator('.test-review__item.is-wrong').count(), 43 - expectedCorrect);
+  assert.equal(await results.getByTestId('practise-again').locator('li').count(), 43 - expectedCorrect, 'words to practise again');
   // Review Mistakes shows only the wrong ones; Show All Answers brings the rest back.
   await p.getByRole('button', { name: 'Review Mistakes' }).click();
-  assert.equal(await items.count(), 31 - expectedCorrect);
+  assert.equal(await items.count(), 43 - expectedCorrect);
   assert.equal(await results.locator('.test-review__item.is-correct').count(), 0);
   await p.getByRole('button', { name: 'Show All Answers' }).click();
-  assert.equal(await items.count(), 31);
+  assert.equal(await items.count(), 43);
   await shot(p, 'test-results');
   await p.context().close();
 });
@@ -2080,7 +2371,7 @@ await step('history per unit: latest, best, attempts, date and mistakes kept; re
   const p = await openApp({ init: FAKE_SPEECH });
   await p.evaluate(() => localStorage.clear());
   await p.reload();
-  await openTest(p, 'Unit 4, 31 words');
+  await openTest(p, 'Unit 4, 43 words');
   assert.match(await p.getByTestId('unit-test').innerText(), /No attempts yet/);
   const runQuick = async (rightCount) => {
     for (let i = 0; i < 10; i++) {
@@ -2103,7 +2394,7 @@ await step('history per unit: latest, best, attempts, date and mistakes kept; re
   assert.equal(stored.mistakes.length, 6, 'mistakes of the latest attempt');
   assert.ok(Date.now() - Date.parse(stored.latest.date) < 600000, 'attempt date saved');
   await p.getByRole('button', { name: 'Return to Unit' }).click();
-  assert.equal(await p.locator('.card-slot').count(), 31, 'Return to Unit shows the cards');
+  assert.equal(await p.locator('.card-slot').count(), 43, 'Return to Unit shows the cards');
   assert.match(await p.locator('.test-button').innerText(), /best 90%/);
   // Starting and leaving a new attempt changes nothing.
   await p.locator('.test-button').click();
@@ -2111,7 +2402,7 @@ await step('history per unit: latest, best, attempts, date and mistakes kept; re
   await p.getByRole('button', { name: 'Exit test without saving' }).click();
   await p.reload();
   await p.waitForSelector('.card');
-  await openTest(p, 'Unit 4, 31 words');
+  await openTest(p, 'Unit 4, 43 words');
   const history = (await p.getByTestId('test-history').innerText()).replace(/\s+/g, ' ');
   assert.match(history, /Latest 40% \(4\/10\)/i);
   assert.match(history, /Best 90% \(9\/10\)/i);
@@ -2531,7 +2822,15 @@ for (const vp of viewports) {
             const term = face.querySelector('.term').getBoundingClientRect();
             const audio = face.querySelector('.card__audio').getBoundingClientRect();
             const hint = face.querySelector('.card__hint').getBoundingClientRect();
-            return term.top < img.bottom + 2 || audio.bottom > hint.top + 6;
+            // Example sentences sit between the audio buttons and the hint, fully shown (no scrolling).
+            const examples = face.querySelector('.card__examples');
+            const ex = examples?.getBoundingClientRect();
+            return (
+              term.top < img.bottom + 2 ||
+              audio.bottom > hint.top + 6 ||
+              hint.bottom > face.getBoundingClientRect().bottom ||
+              (examples && (audio.bottom > ex.top || ex.bottom > hint.top + 6 || examples.scrollHeight > examples.clientHeight + 1))
+            );
           })
           .map((face) => face.querySelector('.term').textContent),
       };
@@ -2555,7 +2854,7 @@ for (const vp of viewports) {
       assert.equal(info.cardW, vp.width - 40, `mobile card = 100vw - 40px (${info.cardW})`);
     } else {
       assert.ok(info.cardW >= 270 && info.cardW <= 330, `card width ${info.cardW}`);
-      assert.ok(info.cardH >= 370 && info.cardH <= 460, `card height ${info.cardH}`);
+      assert.ok(info.cardH >= 470 && info.cardH <= 640, `card height ${info.cardH}`);
     }
     if (vp.touch) {
       await p.evaluate(() => window.scrollTo(0, 0));

@@ -43,25 +43,7 @@ export function AudioButton({ text, mode = 'normal', isSpeaking, disabled = fals
           🐢
         </span>
       ) : (
-        <svg className="audio-button__icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
-          <path fill="currentColor" d="M4 9v6h4l5 4V5L8 9H4Z" />
-          <path
-            className="audio-button__wave audio-button__wave--1"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            d="M16 9.5a3.5 3.5 0 0 1 0 5"
-          />
-          <path
-            className="audio-button__wave audio-button__wave--2"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            d="M18.5 7a7 7 0 0 1 0 10"
-          />
-        </svg>
+        <SpeakerIcon className="audio-button__icon" size={20} />
       )}
       <span className="audio-button__label">{isSpeaking ? label.speaking : label.idle}</span>
       <span className="audio-button__bars" aria-hidden="true">
@@ -74,6 +56,31 @@ export function AudioButton({ text, mode = 'normal', isSpeaking, disabled = fals
         )}
       </span>
     </button>
+  );
+}
+
+/** Speaker with two sound waves; the waves pulse while `.is-speaking` (Listen and sentence buttons). */
+export function SpeakerIcon({ className, size }: { className: string; size: number }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" width={size} height={size} aria-hidden="true">
+      <path fill="currentColor" d="M4 9v6h4l5 4V5L8 9H4Z" />
+      <path
+        className="audio-button__wave audio-button__wave--1"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        d="M16 9.5a3.5 3.5 0 0 1 0 5"
+      />
+      <path
+        className="audio-button__wave audio-button__wave--2"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        d="M18.5 7a7 7 0 0 1 0 10"
+      />
+    </svg>
   );
 }
 

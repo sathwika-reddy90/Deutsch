@@ -20,7 +20,7 @@ interface FlashcardGridProps {
   onActivate: (id: string) => void;
   onMarkLearned: (id: string) => void;
   onUnmarkLearned: (id: string) => void;
-  onSpeak: (id: string, text: string, mode: SpeechMode) => void;
+  onSpeak: (id: string, text: string, mode: SpeechMode, rate?: number) => void;
 }
 
 export function FlashcardGrid({ words, activeId, flipped, learned, speaking, practice, locked, ...rest }: FlashcardGridProps) {
@@ -36,6 +36,7 @@ export function FlashcardGrid({ words, activeId, flipped, learned, speaking, pra
           isFlipped={flipped.has(word.id)}
           isLearned={learned.has(word.id)}
           speakingMode={speaking?.id === word.id ? speaking.mode : null}
+          speakingSentence={speaking?.id.startsWith(`${word.id}#`) ? speaking : null}
           practice={practice?.status === 'running' && practice.id === word.id ? practice : null}
           {...rest}
         />

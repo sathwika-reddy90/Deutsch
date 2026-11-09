@@ -2,11 +2,15 @@
 
 German vocabulary flashcards, organised in units — one page with a unit selector
 (**Unit 1 · Unit 2 · Unit 3 · Unit 4 · Alphabets**). Unit 1 has 61 words and phrases, Unit 2
-has 68, Unit 3 has 28, Unit 4 ("Guten Appetit!") has 31, and Alphabets has the letters A–Z.
+has 68, Unit 3 has 28, Unit 4 ("Guten Appetit!") has 43, and Alphabets has the letters A–Z.
 Each card shows the English meaning
 and an illustration and flips in 3D to reveal the German word with its article
 (der/die/das), a pronunciation guide, and two audio buttons that speak the full German
 term with a German (de-DE) browser voice: 🔊 Listen (normal) and 🐢 Slow Listen.
+Under them, **Example Sentences** shows two short A1 sentences using the word, each with
+its English translation and its own 🔊 (normal) and 🐢 (slow) button that reads the whole
+sentence aloud with the same German voice (rates in `SENTENCE_RATES`, `src/hooks/useGermanSpeech.ts`).
+Hover (or tap, on phones) any word of a sentence to see its English in a small tooltip.
 
 ## Units
 
@@ -17,7 +21,7 @@ const UNIT_DEFINITIONS = [
   { number: 1, title: 'German Vocabulary', words: UNIT_1_WORDS }, // the 61 words and phrases
   { number: 2, title: 'German Vocabulary', words: UNIT_2_WORDS }, // the 68 words
   { number: 3, title: 'German Vocabulary', words: UNIT_3_WORDS }, // the 28 words
-  { number: 4, title: 'Guten Appetit!', words: UNIT_4_WORDS }, // the 31 words
+  { number: 4, title: 'Guten Appetit!', words: UNIT_4_WORDS }, // the 43 words
   { number: 0, name: 'Alphabets', tag: 'A–Z', noun: 'letter', title: 'German Alphabet', words: ALPHABET_WORDS },
 ];
 ```
@@ -110,6 +114,22 @@ All vocabulary lives in [`src/data/vocabulary.ts`](src/data/vocabulary.ts), grou
   `fork.png` is cropped from "Fork and knife" because there is no fork-only emoji.
 - New categories go in `CATEGORIES` (plus an icon in `CategoryFilter.tsx` and a
   `.panel--<name>` colour in `Flashcard.css`).
+- Every new word also needs two example sentences in
+  [`src/data/examples.ts`](src/data/examples.ts), keyed by the word's id
+  (`u<unit>-<slug of the German term>`, e.g. `u3-das-meer`):
+
+  ```ts
+  'u3-das-meer': [
+    ['Ich sehe das Meer.', 'I see the sea.'],
+    ['Das Meer ist blau.', 'The sea is blue.'],
+  ],
+  ```
+
+  Each word in a sentence gets its English from [`src/data/glossary.ts`](src/data/glossary.ts)
+  (add any new word form there). Where a word means something else in that sentence, add
+  a third element: `['Ich warte auf den Bus.', 'I am waiting for the bus.', { auf: 'for | warten auf = to wait for' }]`.
+
+  `npm run test:e2e` fails if a word has no sentences, a sentence word has no English, or an entry matches no word.
 
 ## Structure
 
@@ -118,13 +138,18 @@ src/
   App.tsx                       selected unit + unit selector
   UnitWorkspace.tsx             everything for one unit (cards, filters, practice, progress)
   data/vocabulary.ts            units + word lists (no UI code)
+  data/examples.ts              two example sentences per word (German + English), by word id
+  data/glossary.ts              English of every word form used in the sentences (hover / tap tooltips)
   hooks/useFlashcardDeck.ts     deck state: category, search, order, flips, learned, current card
   hooks/useGermanSpeech.ts      Web Speech API: voice detection, one utterance at a time
   hooks/useSpeakingPractice.ts  lesson over the shown cards: English ×1 → 3 s → flip → German ×5 → flip back → next
   components/
     Flashcard.tsx               one card: 3D flip container + learned button
     FlashcardFront.tsx          English side
-    FlashcardBack.tsx           German side (article + word, pronunciation, Listen)
+    FlashcardBack.tsx           German side (article + word, pronunciation, Listen, example sentences)
+    ExampleSentences.tsx        "Example Sentences": the two sentences with their English and 🔊 / 🐢
+    GlossedSentence.tsx         a sentence whose words show their English on hover / focus / tap
+    WordTooltip.tsx             the one tooltip for that (rendered on <body>, kept inside the viewport)
     AudioButton.tsx             🔊 Listen / 🐢 Slow Listen, speaking states, unavailable message
     UnitSelector.tsx            [ Unit 1 ] [ Unit 2 ] [ Unit 3 ]
     UnitHeader.tsx              "UNIT 3 · German Vocabulary · 28 words · x / 28 learned"

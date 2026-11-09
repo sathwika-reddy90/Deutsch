@@ -133,9 +133,9 @@ export function UnitWorkspace({ unit, words, unitNav, suggestedUnit, onSelectUni
   );
   const { speak } = speech;
   const handleSpeak = useCallback(
-    (id: string, text: string, mode: SpeechMode) => {
+    (id: string, text: string, mode: SpeechMode, rate?: number) => {
       if (lessonRunning) return; // never overlap the lesson's speech
-      speak(id, text, mode);
+      speak(id, text, mode, rate);
     },
     [lessonRunning, speak],
   );

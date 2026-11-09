@@ -4,6 +4,11 @@ export type SpeechMode = 'normal' | 'slow';
 
 /** Speaking rates: normal for everyday listening, slow for beginners. */
 export const SPEECH_RATES: Record<SpeechMode, number> = { normal: 0.85, slow: 0.55 };
+/** Example sentences: closer to natural speed, and a slow speed that keeps the sentence flowing. */
+export const SENTENCE_RATES: Record<SpeechMode, number> = { normal: 0.9, slow: 0.7 };
+
+/** Speech id of a word's example sentence (index 0 or 1), e.g. "u3-das-meer#1". */
+export const sentenceSpeechId = (wordId: string, index: number) => `${wordId}#${index + 1}`;
 const PITCH = 1;
 
 export type SpeechLanguage = 'de' | 'en';
@@ -174,14 +179,17 @@ export function useGermanSpeech() {
     [interrupt],
   );
 
-  /** Listen / Slow Listen: speaks the full German term (e.g. "der Platz") once. */
+  /**
+   * Listen / Slow Listen: speaks the full German term (e.g. "der Platz") once.
+   * Example sentences use it too, with their own id and rate.
+   */
   const speak = useCallback(
-    (id: string, text: string, mode: SpeechMode = 'normal') => {
+    (id: string, text: string, mode: SpeechMode = 'normal', rate = SPEECH_RATES[mode]) => {
       if (!supported) return;
       const key = `${id}:${mode}`;
       if (buttonKeyRef.current === key) return; // this exact button is already playing
       setSpeaking({ id, mode });
-      play(text, { language: 'de', rate: SPEECH_RATES[mode] }, () =>
+      play(text, { language: 'de', rate }, () =>
         setSpeaking((current) => (current?.id === id && current.mode === mode ? null : current)),
       );
       buttonKeyRef.current = key;
