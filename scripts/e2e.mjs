@@ -230,6 +230,105 @@ const EXPECTED_UNIT_4 = [
   ['Mahlzeit!', 'meal time (greeting)'],
 ];
 
+// Unit 5 "Alltag und Familie", in order: [German, English]. Nachrichten and ergänzen appear twice, as given.
+const EXPECTED_UNIT_5 = [
+  ['die Uhrzeit', 'time / time of day'],
+  ['das Alter', 'age'],
+  ['treffen', 'meet'],
+  ['duschen', 'take a shower'],
+  ['besuchen', 'visit'],
+  ['die Nachrichten', 'news / messages'],
+  ['lange schlafen', 'sleep late'],
+  ['Wie spät ist es?', 'what time is it?'],
+  ['aufstehen', 'get up'],
+  ['ordnen', 'arrange / put in order'],
+  ['die Bilder', 'pictures'],
+  ['offiziell', 'officially'],
+  ['sehen', 'see'],
+  ['die Eltern', 'parents'],
+  ['ergänzen', 'add to / supplement'],
+  ['der Satz', 'sentence'],
+  ['sagt', 'says'],
+  ['ankreuzen', 'cross / tick a box'],
+  ['ergänzen', 'add / supplement'],
+  ['bleiben', 'remain / stay'],
+  ['beschreibt', 'describes'],
+  ['ledig', 'single / unmarried'],
+  ['das Motorrad', 'motorcycle'],
+  ['die Geige', 'violin'],
+  ['die Nachrichten', 'news'],
+  ['der Termin', 'appointment'],
+  ['können', 'can / be able to'],
+  ['würde', 'would'],
+  ['wollen', 'want'],
+  ['die Hausaufgaben', 'homework'],
+  ['leider', 'unfortunately'],
+  ['fast', 'almost'],
+  ['gerade', 'right now'],
+  ['der Berg', 'mountain'],
+  ['nächste Woche', 'next week'],
+  ['schade', 'too bad / what a pity'],
+  ['die Kneipe', 'pub'],
+  ['vereinbaren', 'arrange / make an appointment'],
+  ['die Rollenkarte', 'role card'],
+  ['spielen', 'play'],
+  ['das Büro', 'office'],
+  ['die Verspätung', 'delay'],
+];
+
+// Unit 6 "Zeit mit Freunden", in order: [German, English]. zusammen appears twice, as given.
+const EXPECTED_UNIT_6 = [
+  ['der Geburtstag', 'birthday'],
+  ['die Einladung', 'invitation'],
+  ['das Fenster', 'window'],
+  ['glauben', 'to believe'],
+  ['vielleicht', 'maybe'],
+  ['das Klettern', 'climbing'],
+  ['das Fahrrad', 'bicycle'],
+  ['feiern', 'to celebrate'],
+  ['die Freizeitaktivitäten', 'leisure activities'],
+  ['die Überraschung', 'surprise'],
+  ['Alles klar?', 'everything okay?'],
+  ['die Idee', 'idea'],
+  ['die Eltern', 'parents'],
+  ['Klingt gut.', 'sounds good'],
+  ['besonders', 'special / especially'],
+  ['versuchen', 'to try'],
+  ['das Thema', 'topic / subject'],
+  ['das Geschenk', 'gift'],
+  ['beginnt', 'begins'],
+  ['der Treffpunkt', 'meeting point'],
+  ['der Ausflug', 'trip / excursion'],
+  ['das Sammeln', 'collecting'],
+  ['der Regen', 'rain'],
+  ['schicken', 'to send'],
+  ['die Nachricht', 'message'],
+  ['die Achtung', 'attention / caution'],
+  ['die Küche', 'kitchen'],
+  ['gesund', 'healthy'],
+  ['Bilden Sie Sätze.', 'make sentences'],
+  ['anfangen', 'to begin / start'],
+  ['zusammen', 'together'],
+  ['abholen', 'to pick up'],
+  ['die Bestellung', 'order (e.g. in a restaurant)'],
+  ['bezahlen', 'to pay'],
+  ['zusammen', 'together (one bill)'],
+  ['getrennt', 'separate / separately'],
+  ['Stimmt so.', 'keep the change'],
+  ['das Abendessen', 'dinner'],
+  ['durstig', 'thirsty'],
+  ['der Spaß', 'fun'],
+  ['das Kaffeehaus', 'coffeehouse'],
+  ['bestellen', 'to order'],
+  ['die Menschen', 'people'],
+  ['sitzt', 'sits'],
+  ['selbst', 'self / oneself'],
+  ['die Selbstbedienung', 'self-service'],
+  ['voll', 'full'],
+  ['die Gerichte', 'dishes / meals'],
+  ['die Kneipe', 'pub'],
+];
+
 // Alphabets: [letter, name shown on the back, German spelling the voice speaks].
 const EXPECTED_LETTERS = [
   ['A', 'Ah', 'Ah'], ['B', 'Beh', 'Beh'], ['C', 'Tseh', 'Zeh'], ['D', 'Deh', 'Deh'], ['E', 'Eh', 'Eh'],
@@ -380,7 +479,7 @@ const helpers = (page) => {
 
 // ============================================================ unit data
 console.log('Units – data');
-await step('data: Units 1–4 and Alphabets – 61, 68, exactly the 28 Unit 3 words, 43, A–Z', async () => {
+await step('data: Units 1–6 and Alphabets – 61, 68, exactly the 28 Unit 3 words, 43, 42, 49, A–Z', async () => {
   assert.deepEqual(
     UNITS.map((u) => [u.number, u.name, u.wordCount, u.tag, u.title]),
     [
@@ -388,6 +487,8 @@ await step('data: Units 1–4 and Alphabets – 61, 68, exactly the 28 Unit 3 wo
       [2, 'Unit 2', 68, '68', 'German Vocabulary'],
       [3, 'Unit 3', 28, '28', 'German Vocabulary'],
       [4, 'Unit 4', 43, '43', 'Guten Appetit!'],
+      [5, 'Unit 5', 42, '42', 'Alltag und Familie'],
+      [6, 'Unit 6', 49, '49', 'Zeit mit Freunden'],
       [0, 'Alphabets', 26, 'A–Z', 'German Alphabet'],
     ],
   );
@@ -404,8 +505,8 @@ await step('data: Units 1–4 and Alphabets – 61, 68, exactly the 28 Unit 3 wo
   assert.equal(wordsInUnit(1).length, 61);
   assert.equal(wordsInUnit(2).length, 68);
   assert.equal(wordsInUnit(3).length, 28);
-  assert.equal(VOCABULARY.length, 61 + 68 + 28 + 43 + 26, 'no duplicated words');
-  assert.equal(new Set(VOCABULARY.map((w) => w.id)).size, 61 + 68 + 28 + 43 + 26, 'unique ids');
+  assert.equal(VOCABULARY.length, 61 + 68 + 28 + 43 + 42 + 49 + 26, 'no duplicated words');
+  assert.equal(new Set(VOCABULARY.map((w) => w.id)).size, 61 + 68 + 28 + 43 + 42 + 49 + 26, 'unique ids');
   for (const [n, expected] of [
     [1, EXPECTED_UNIT_1],
     [2, EXPECTED_UNIT_2],
@@ -423,15 +524,35 @@ await step('data: Units 1–4 and Alphabets – 61, 68, exactly the 28 Unit 3 wo
   }
   assert.equal(new Set(wordsInUnit(1).map(germanTerm)).size, 61, 'no duplicate German terms in Unit 1');
   assert.equal(new Set(wordsInUnit(4).map(germanTerm)).size, 43, 'no duplicate German terms in Unit 4');
-  // Example sentences: exactly two (German + English) for every word of Units 1–4, none for letters.
+  {
+    const words = wordsInUnit(5);
+    assert.deepEqual(words.map((w) => [germanTerm(w), w.english]), EXPECTED_UNIT_5, 'Unit 5: the 42 words in order');
+    assert.ok(words.every((w) => w.id.startsWith('u5-') && w.pronunciation && w.images.length), 'Unit 5: ids, guides and pictures');
+    assert.deepEqual(
+      words.filter((w) => ['die Nachrichten', 'ergänzen'].includes(germanTerm(w))).map((w) => w.id),
+      ['u5-die-nachrichten-news-messages', 'u5-ergaenzen-add-to-supplement', 'u5-ergaenzen-add-supplement', 'u5-die-nachrichten-news'],
+      'Unit 5: the two repeated German words get their own ids',
+    );
+  }
+  {
+    const words = wordsInUnit(6);
+    assert.deepEqual(words.map((w) => [germanTerm(w), w.english]), EXPECTED_UNIT_6, 'Unit 6: the 49 words in order');
+    assert.ok(words.every((w) => w.id.startsWith('u6-') && w.pronunciation && w.images.length), 'Unit 6: ids, guides and pictures');
+    assert.deepEqual(
+      words.filter((w) => w.german === 'zusammen').map((w) => w.id),
+      ['u6-zusammen-together', 'u6-zusammen-together-one-bill'],
+      'Unit 6: the repeated "zusammen" gets two ids',
+    );
+  }
+  // Example sentences: exactly two (German + English) for every word of Units 1–6, none for letters.
   const vocabWords = VOCABULARY.filter((w) => w.unit !== 0);
-  assert.equal(vocabWords.length, 61 + 68 + 28 + 43);
+  assert.equal(vocabWords.length, 61 + 68 + 28 + 43 + 42 + 49);
   for (const w of vocabWords) {
     assert.equal(w.sentences?.length, 2, `${w.id} has two example sentences`);
     assert.ok(w.sentences.every((s) => s.german.trim() && s.english.trim()), `${w.id}: German and English for both`);
   }
   assert.ok(letters.every((w) => !w.sentences), 'letters have no example sentences');
-  assert.equal(new Set(vocabWords.flatMap((w) => w.sentences.map((s) => s.german))).size, 400, 'no example sentence repeated');
+  assert.equal(new Set(vocabWords.flatMap((w) => w.sentences.map((s) => s.german))).size, 582, 'no example sentence repeated');
   assert.deepEqual(Object.keys(EXAMPLES).filter((id) => !VOCABULARY.some((w) => w.id === id)), [], 'every example entry belongs to a word');
   // Only the pronouns sie (she) / sie (they) / Sie (you) share German in Unit 2.
   assert.deepEqual(
@@ -441,9 +562,9 @@ await step('data: Units 1–4 and Alphabets – 61, 68, exactly the 28 Unit 3 wo
   assert.ok(wordsInUnit(1).every((w) => !w.id.includes('--')) && wordsInUnit(1)[0].id === 'u1-das-butterbrot');
   assert.ok(wordsInUnit(3).every((w) => w.id.startsWith('u3-')), 'Unit 3 ids are unit-scoped');
   assert.deepEqual(
-    VOCABULARY.filter((w) => ![0, 1, 2, 3, 4].includes(w.unit)).map(germanTerm),
+    VOCABULARY.filter((w) => ![0, 1, 2, 3, 4, 5, 6].includes(w.unit)).map(germanTerm),
     [],
-    'words outside Units 1–4 and Alphabets',
+    'words outside Units 1–6 and Alphabets',
   );
   assert.deepEqual(wordsInUnit(3).map(germanTerm), EXPECTED.map(([g]) => g));
   assert.deepEqual(
@@ -1122,7 +1243,7 @@ await step('one page with a unit selector; Unit 3 selected by default', async ()
   const tabs = p.locator('.unit-selector .unit-tab');
   assert.deepEqual(
     (await tabs.allInnerTexts()).map((t) => t.replace(/\s+/g, ' ').trim().toUpperCase()),
-    ['UNIT 1 61', 'UNIT 2 68', 'UNIT 3 28', 'UNIT 4 43', 'ALPHABETS A–Z'],
+    ['UNIT 1 61', 'UNIT 2 68', 'UNIT 3 28', 'UNIT 4 43', 'UNIT 5 42', 'UNIT 6 49', 'ALPHABETS A–Z'],
   );
   assert.equal(await p.getByRole('button', { name: 'Unit 3, 28 words' }).getAttribute('aria-pressed'), 'true');
   assert.equal(await p.locator('.unit__label').innerText(), 'UNIT 3');
@@ -2131,6 +2252,8 @@ for (const [n, label, first] of [
   [1, 'Unit 1, 61 words', 'das Butterbrot'],
   [2, 'Unit 2, 68 words', 'die Arbeit'],
   [4, 'Unit 4, 43 words', 'die Mahlzeit'],
+  [5, 'Unit 5, 42 words', 'die Uhrzeit'],
+  [6, 'Unit 6, 49 words', 'der Geburtstag'],
   [0, 'Alphabets, 26 letters', 'Ah'],
 ]) {
   await step(`Enter → reveal, Enter → Listen also in ${label.split(',')[0]} (says “${first}”)`, async () => {
@@ -2156,6 +2279,8 @@ const TEST_UNITS = [
   { n: 2, label: 'Unit 2, 68 words', name: 'Unit 2' },
   { n: 3, label: 'Unit 3, 28 words', name: 'Unit 3' },
   { n: 4, label: 'Unit 4, 43 words', name: 'Unit 4' },
+  { n: 5, label: 'Unit 5, 42 words', name: 'Unit 5' },
+  { n: 6, label: 'Unit 6, 49 words', name: 'Unit 6' },
   { n: 0, label: 'Alphabets, 26 letters', name: 'Alphabets' },
 ];
 const byId = new Map(VOCABULARY.map((w) => [w.id, w]));

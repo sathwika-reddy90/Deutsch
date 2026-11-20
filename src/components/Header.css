@@ -38,7 +38,8 @@
 }
 
 .header__progress {
-  flex: 0 1 360px;
+  /* 300px keeps it beside the seven unit tabs on a 1280px laptop */
+  flex: 0 1 300px;
   display: grid;
   gap: 12px;
   padding: 16px 20px;

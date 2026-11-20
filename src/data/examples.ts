@@ -1145,4 +1145,436 @@ export const EXAMPLES: Record<string, [ExamplePair, ExamplePair]> = {
       },
     ],
   ],
+
+  // ------------------------------------------------------------- Unit 5
+  'u5-die-uhrzeit': [
+    ['Weißt du die Uhrzeit?', 'Do you know the time?'],
+    ['Die Uhrzeit steht auf dem Ticket.', 'The time is on the ticket.', { steht: 'is (written) | stehen = to stand' }],
+  ],
+  'u5-das-alter': [
+    ['Das Alter ist nur eine Zahl.', 'Age is only a number.'],
+    ['Bitte schreiben Sie Ihr Alter hier.', 'Please write your age here.'],
+  ],
+  'u5-treffen': [
+    ['Wir treffen Anna im Café.', 'We are meeting Anna at the café.', { im: 'at the | in + dem' }],
+    ['Treffen wir uns morgen?', 'Shall we meet tomorrow?', { uns: 'each other | sich treffen = to meet (up)' }],
+  ],
+  'u5-duschen': [
+    ['Ich dusche jeden Morgen.', 'I take a shower every morning.'],
+    ['Nach dem Sport duschen wir.', 'After sport we take a shower.', { Nach: 'after' }],
+  ],
+  'u5-besuchen': [
+    ['Am Sonntag besuchen wir Oma.', 'On Sunday we are visiting Grandma.'],
+    ['Besuchst du mich bald?', 'Will you visit me soon?'],
+  ],
+  'u5-die-nachrichten-news-messages': [
+    ['Ich habe zwei neue Nachrichten.', 'I have two new messages.', { Nachrichten: 'messages | plural of die Nachricht' }],
+    ['Schreib mir eine Nachricht!', 'Write me a message!'],
+  ],
+  'u5-lange-schlafen': [
+    ['Am Samstag schlafe ich lange.', 'On Saturday I sleep late.', { lange: 'late | lange schlafen = to sleep late' }],
+    ['Die Kinder wollen lange schlafen.', 'The children want to sleep late.', { lange: 'late | lange schlafen = to sleep late' }],
+  ],
+  'u5-wie-spaet-ist-es': [
+    ['Entschuldigung, wie spät ist es?', 'Excuse me, what time is it?', { wie: 'how | Wie spät ist es? = What time is it?' }],
+    ['Wie spät ist es jetzt in Berlin?', 'What time is it in Berlin now?', { Wie: 'how | Wie spät ist es? = What time is it?' }],
+  ],
+  'u5-aufstehen': [
+    [
+      'Ich stehe um sieben Uhr auf.',
+      'I get up at seven o’clock.',
+      { stehe: 'get | ich stehe … auf = I get up (aufstehen)', auf: 'up | the “auf” of aufstehen goes to the end' },
+    ],
+    ['Am Montag muss ich früh aufstehen.', 'On Monday I have to get up early.'],
+  ],
+  'u5-ordnen': [
+    ['Ordnen Sie die Wörter.', 'Put the words in order.'],
+    ['Ich ordne meine Bücher.', 'I am putting my books in order.'],
+  ],
+  'u5-die-bilder': [
+    ['Die Bilder sind sehr schön.', 'The pictures are very nice.', { schön: 'nice / beautiful' }],
+    ['Sieh dir die Bilder an!', 'Look at the pictures!', { Sieh: 'look | sich … ansehen = to look at', dir: 'yourself | not translated here', an: 'at | the “an” of ansehen goes to the end' }],
+  ],
+  'u5-offiziell': [
+    ['Das Büro ist jetzt offiziell offen.', 'The office is now officially open.'],
+    ['Offiziell heißt er Johannes.', 'Officially his name is Johannes.', { heißt: 'is called | heißen' }],
+  ],
+  'u5-sehen': [
+    ['Ich sehe den Bus.', 'I can see the bus.'],
+    ['Wir sehen heute einen Film.', 'We are watching a film today.', { sehen: 'watch | einen Film sehen = to watch a film' }],
+  ],
+  'u5-die-eltern': [
+    ['Meine Eltern leben in München.', 'My parents live in Munich.'],
+    ['Ich rufe meine Eltern an.', 'I am calling my parents.', { rufe: 'call | ich rufe … an = I call (anrufen)', an: 'the “an” of anrufen goes to the end' }],
+  ],
+  'u5-ergaenzen-add-to-supplement': [
+    ['Ergänzen Sie die Sätze.', 'Complete the sentences.', { Ergänzen: 'complete / add to | ergänzen' }],
+    ['Bitte ergänze die Liste.', 'Please add to the list.'],
+  ],
+  'u5-der-satz': [
+    ['Der Satz ist zu lang.', 'The sentence is too long.', { zu: 'too' }],
+    ['Lies den Satz bitte laut.', 'Please read the sentence aloud.'],
+  ],
+  'u5-sagt': [
+    ['Was sagt der Lehrer?', 'What does the teacher say?'],
+    ['Mein Vater sagt immer Danke.', 'My father always says thank you.', { Danke: 'thank you' }],
+  ],
+  'u5-ankreuzen': [
+    [
+      'Kreuzen Sie die richtige Antwort an.',
+      'Tick the right answer.',
+      { Kreuzen: 'tick / cross | Kreuzen Sie … an = tick (ankreuzen)', an: 'the “an” of ankreuzen goes to the end' },
+    ],
+    ['Du musst hier ankreuzen.', 'You have to tick here.'],
+  ],
+  'u5-ergaenzen-add-supplement': [
+    ['Ich ergänze meine Notizen.', 'I am adding to my notes.'],
+    ['Können Sie das Formular ergänzen?', 'Can you complete the form?', { ergänzen: 'complete / add to' }],
+  ],
+  'u5-bleiben': [
+    ['Heute bleibe ich zu Hause.', 'Today I am staying at home.', { zu: 'at | zu Hause = at home' }],
+    ['Wie lange bleibst du in Wien?', 'How long are you staying in Vienna?', { lange: 'long | wie lange = how long' }],
+  ],
+  'u5-beschreibt': [
+    ['Er beschreibt sein Zimmer.', 'He is describing his room.'],
+    ['Der Text beschreibt eine Familie.', 'The text describes a family.'],
+  ],
+  'u5-ledig': [
+    ['Mein Bruder ist ledig.', 'My brother is single.'],
+    ['Sind Sie verheiratet oder ledig?', 'Are you married or single?'],
+  ],
+  'u5-das-motorrad': [
+    ['Mein Onkel fährt Motorrad.', 'My uncle rides a motorcycle.', { fährt: 'rides | fahren' }],
+    ['Das Motorrad ist rot.', 'The motorcycle is red.'],
+  ],
+  'u5-die-geige': [
+    ['Sie spielt Geige.', 'She plays the violin.', { Sie: 'she' }],
+    ['Die Geige ist alt und teuer.', 'The violin is old and expensive.'],
+  ],
+  'u5-die-nachrichten-news': [
+    ['Um acht Uhr kommen die Nachrichten.', 'The news is on at eight o’clock.', { kommen: 'are on (TV, radio) | kommen = to come', Nachrichten: 'news' }],
+    ['Mein Opa hört gern Nachrichten.', 'My grandpa likes listening to the news.', { gern: 'likes (doing) | gern + verb', Nachrichten: 'news' }],
+  ],
+  'u5-der-termin': [
+    ['Ich habe morgen einen Termin.', 'I have an appointment tomorrow.'],
+    ['Der Termin ist um zehn Uhr.', 'The appointment is at ten o’clock.'],
+  ],
+  'u5-koennen': [
+    ['Kannst du Gitarre spielen?', 'Can you play the guitar?'],
+    ['Wir können morgen kommen.', 'We can come tomorrow.'],
+  ],
+  'u5-wuerde': [
+    ['Ich würde gern Tee trinken.', 'I would like to drink tea.', { gern: 'like to | würde gern = would like to' }],
+    ['Würdest du mir helfen?', 'Would you help me?'],
+  ],
+  'u5-wollen': [
+    ['Wir wollen ins Kino gehen.', 'We want to go to the cinema.'],
+    ['Willst du ein Eis?', 'Do you want an ice cream?'],
+  ],
+  'u5-die-hausaufgaben': [
+    ['Ich mache meine Hausaufgaben.', 'I am doing my homework.', { mache: 'do | machen' }],
+    ['Die Hausaufgaben sind leicht.', 'The homework is easy.'],
+  ],
+  'u5-leider': [
+    ['Leider habe ich keine Zeit.', 'Unfortunately I have no time.'],
+    ['Das Café ist leider geschlossen.', 'Unfortunately the café is closed.'],
+  ],
+  'u5-fast': [
+    ['Es ist fast neun Uhr.', 'It is almost nine o’clock.'],
+    ['Ich bin fast fertig.', 'I am almost ready.'],
+  ],
+  'u5-gerade': [
+    ['Ich koche gerade.', 'I am cooking right now.'],
+    ['Er ist gerade nicht da.', 'He is not here right now.', { da: 'here / there' }],
+  ],
+  'u5-der-berg': [
+    ['Der Berg ist sehr hoch.', 'The mountain is very high.'],
+    ['Wir wandern auf den Berg.', 'We are hiking up the mountain.', { auf: 'up | auf den Berg = up the mountain' }],
+  ],
+  'u5-naechste-woche': [
+    ['Nächste Woche fahren wir nach Berlin.', 'Next week we are going to Berlin.', { fahren: 'are going (by car, train …) | fahren' }],
+    ['Wir sehen uns nächste Woche.', 'See you next week.', { sehen: 'see | wir sehen uns = see you', uns: 'each other' }],
+  ],
+  'u5-schade': [
+    ['Du kannst nicht kommen? Schade!', 'You can’t come? What a pity!'],
+    ['Schade, das Konzert ist schon vorbei.', 'Too bad, the concert is already over.'],
+  ],
+  'u5-die-kneipe': [
+    ['Wir gehen heute Abend in die Kneipe.', 'We are going to the pub this evening.', { in: 'to | in die Kneipe = to the pub' }],
+    ['Die Kneipe ist neben dem Bahnhof.', 'The pub is next to the station.'],
+  ],
+  'u5-vereinbaren': [
+    ['Ich möchte einen Termin vereinbaren.', 'I would like to make an appointment.', { vereinbaren: 'make | einen Termin vereinbaren = to make an appointment' }],
+    ['Wir vereinbaren ein Treffen.', 'We are arranging a meeting.'],
+  ],
+  'u5-die-rollenkarte': [
+    ['Lies deine Rollenkarte.', 'Read your role card.'],
+    ['Auf der Rollenkarte steht dein Name.', 'Your name is on the role card.', { steht: 'is (written) | stehen = to stand' }],
+  ],
+  'u5-spielen': [
+    ['Die Kinder spielen im Park.', 'The children are playing in the park.'],
+    ['Spielst du gern Fußball?', 'Do you like playing football?', { gern: 'like (doing) | gern + verb' }],
+  ],
+  'u5-das-buero': [
+    ['Mein Büro ist im dritten Stock.', 'My office is on the third floor.', { im: 'on the | in + dem' }],
+    ['Sie arbeitet heute im Büro.', 'She is working in the office today.', { Sie: 'she' }],
+  ],
+  'u5-die-verspaetung': [
+    ['Der Zug hat zehn Minuten Verspätung.', 'The train is ten minutes late.', { hat: 'has | Verspätung haben = to be late', Verspätung: 'delay | … Minuten Verspätung haben = to be … minutes late' }],
+    ['Entschuldigung für die Verspätung!', 'Sorry for the delay!', { Entschuldigung: 'sorry / excuse me' }],
+  ],
+
+  // ------------------------------------------------------------- Unit 6
+  'u6-der-geburtstag': [
+    ['Heute ist mein Geburtstag.', 'Today is my birthday.'],
+    ['Wann hast du Geburtstag?', 'When is your birthday?', { hast: 'have | Geburtstag haben = to have a birthday' }],
+  ],
+  'u6-die-einladung': [
+    ['Danke für die Einladung!', 'Thanks for the invitation!'],
+    ['Ich schreibe eine Einladung.', 'I am writing an invitation.'],
+  ],
+  'u6-das-fenster': [
+    ['Das Fenster ist offen.', 'The window is open.'],
+    [
+      'Mach bitte das Fenster zu!',
+      'Please close the window!',
+      { Mach: 'close | zumachen = to close', zu: 'the “zu” of zumachen goes to the end' },
+    ],
+  ],
+  'u6-glauben': [
+    ['Ich glaube, er kommt heute.', 'I believe he is coming today.'],
+    ['Glaubst du das?', 'Do you believe that?', { das: 'that' }],
+  ],
+  'u6-vielleicht': [
+    ['Vielleicht regnet es morgen.', 'Maybe it will rain tomorrow.'],
+    ['Ich komme vielleicht später.', 'Maybe I will come later.'],
+  ],
+  'u6-das-klettern': [
+    ['Klettern macht mir Spaß.', 'I enjoy climbing.', { macht: 'makes | Spaß machen = to be fun', mir: '(to) me' }],
+    ['Das Klettern ist nicht schwer.', 'Climbing is not difficult.', { schwer: 'difficult / hard' }],
+  ],
+  'u6-das-fahrrad': [
+    [
+      'Ich fahre mit dem Fahrrad zur Arbeit.',
+      'I ride my bike to work.',
+      { fahre: 'ride / go | fahren', mit: 'by | mit dem Fahrrad = by bike', dem: 'the | not translated here' },
+    ],
+    ['Mein Fahrrad ist neu.', 'My bicycle is new.'],
+  ],
+  'u6-feiern': [
+    ['Wir feiern am Samstag eine Party.', 'We are having a party on Saturday.', { feiern: 'celebrate / have (a party) | feiern' }],
+    ['Wo feierst du deinen Geburtstag?', 'Where are you celebrating your birthday?'],
+  ],
+  'u6-die-freizeitaktivitaeten': [
+    ['Welche Freizeitaktivitäten magst du?', 'Which leisure activities do you like?'],
+    [
+      'Schwimmen und Lesen sind meine Freizeitaktivitäten.',
+      'Swimming and reading are my leisure activities.',
+      { Schwimmen: 'swimming', Lesen: 'reading' },
+    ],
+  ],
+  'u6-die-ueberraschung': [
+    ['Die Party ist eine Überraschung.', 'The party is a surprise.'],
+    [
+      'Was für eine Überraschung!',
+      'What a surprise!',
+      { Was: 'what | Was für ein …! = What a …!', für: 'for | Was für ein …! = What a …!', eine: 'a' },
+    ],
+  ],
+  'u6-alles-klar': [
+    ['Alles klar bei dir?', 'Everything okay with you?', { Alles: 'everything', bei: 'with', dir: 'you | dative of du' }],
+    [
+      'Alles klar, bis morgen!',
+      'All right, see you tomorrow!',
+      { Alles: 'all | Alles klar = all right', klar: 'right / clear | Alles klar = all right', bis: 'until | bis morgen = see you tomorrow' },
+    ],
+  ],
+  'u6-die-idee': [
+    ['Das ist eine gute Idee!', 'That is a good idea!', { Das: 'that' }],
+    ['Hast du eine Idee für das Geschenk?', 'Do you have an idea for the gift?'],
+  ],
+  'u6-die-eltern': [
+    ['Meine Eltern kommen zur Party.', 'My parents are coming to the party.'],
+    ['Die Eltern von Tom sind sehr nett.', 'Tom’s parents are very nice.', { von: 'of | die Eltern von Tom = Tom’s parents' }],
+  ],
+  'u6-klingt-gut': [
+    ['Kino am Freitag? Klingt gut!', 'Cinema on Friday? Sounds good!'],
+    ['Das klingt gut, ich komme mit.', 'That sounds good, I will come along.', { Das: 'that', mit: 'along | mitkommen = to come along' }],
+  ],
+  'u6-besonders': [
+    ['Der Kuchen ist besonders gut.', 'The cake is especially good.'],
+    ['Heute ist es besonders kalt.', 'Today it is especially cold.'],
+  ],
+  'u6-versuchen': [
+    ['Ich versuche es noch einmal.', 'I will try it again.', { noch: 'once more | noch einmal = again', einmal: 'once | noch einmal = again' }],
+    [
+      'Versuch doch mal den Kuchen!',
+      'Do try the cake!',
+      { Versuch: 'try | versuchen, command (du)', doch: 'do / just | makes a request friendlier', mal: 'just | softens a request' },
+    ],
+  ],
+  'u6-das-thema': [
+    ['Das Thema ist Freizeit.', 'The topic is free time.'],
+    ['Was ist das Thema heute?', 'What is the topic today?'],
+  ],
+  'u6-das-geschenk': [
+    ['Das Geschenk ist für meine Mutter.', 'The gift is for my mother.'],
+    ['Danke für das schöne Geschenk!', 'Thank you for the lovely gift!', { schöne: 'lovely / beautiful' }],
+  ],
+  'u6-beginnt': [
+    ['Der Film beginnt um acht Uhr.', 'The film begins at eight o’clock.'],
+    ['Wann beginnt die Party?', 'When does the party begin?'],
+  ],
+  'u6-der-treffpunkt': [
+    ['Der Treffpunkt ist am Bahnhof.', 'The meeting point is at the station.', { am: 'at the | an + dem' }],
+    ['Wo ist der Treffpunkt?', 'Where is the meeting point?'],
+  ],
+  'u6-der-ausflug': [
+    ['Am Sonntag machen wir einen Ausflug.', 'On Sunday we are going on a trip.', { machen: 'make / do | einen Ausflug machen = to go on a trip' }],
+    ['Der Ausflug war sehr schön.', 'The trip was very nice.', { schön: 'nice / beautiful' }],
+  ],
+  'u6-das-sammeln': [
+    ['Das Sammeln von Briefmarken ist mein Hobby.', 'Collecting stamps is my hobby.', { von: 'of' }],
+    ['Mein Opa liebt das Sammeln.', 'My grandpa loves collecting.'],
+  ],
+  'u6-der-regen': [
+    [
+      'Der Regen hört nicht auf.',
+      'The rain does not stop.',
+      { hört: 'stops | aufhören = to stop', auf: 'the “auf” of aufhören goes to the end' },
+    ],
+    [
+      'Bei Regen bleiben wir zu Hause.',
+      'When it rains we stay at home.',
+      { Bei: 'in / when there is | bei Regen = when it rains', zu: 'at | zu Hause = at home' },
+    ],
+  ],
+  'u6-schicken': [
+    ['Ich schicke dir eine Nachricht.', 'I will send you a message.', { dir: '(to) you | dative of du' }],
+    ['Schickst du mir die Adresse?', 'Will you send me the address?', { mir: '(to) me' }],
+  ],
+  'u6-die-nachricht': [
+    ['Die Nachricht ist von Lisa.', 'The message is from Lisa.', { von: 'from' }],
+    ['Hast du meine Nachricht gelesen?', 'Have you read my message?'],
+  ],
+  'u6-die-achtung': [
+    ['Achtung, der Zug kommt!', 'Attention, the train is coming!'],
+    ['Achtung, die Straße ist nass!', 'Caution, the road is wet!', { Achtung: 'caution / attention' }],
+  ],
+  'u6-die-kueche': [
+    ['Die Küche ist klein.', 'The kitchen is small.'],
+    ['Mama kocht in der Küche.', 'Mum is cooking in the kitchen.', { der: 'the | dative of die' }],
+  ],
+  'u6-gesund': [
+    ['Obst ist gesund.', 'Fruit is healthy.'],
+    [
+      'Ich esse gern gesund.',
+      'I like eating healthily.',
+      { gern: 'like (doing) | gern + verb', gesund: 'healthily | gesund essen = to eat healthily' },
+    ],
+  ],
+  'u6-bilden-sie-saetze': [
+    ['Bilden Sie Sätze mit diesen Wörtern.', 'Make sentences with these words.', { mit: 'with' }],
+    ['Bilden Sie Sätze wie im Beispiel.', 'Make sentences as in the example.', { wie: 'as / like', im: 'in the | in + dem' }],
+  ],
+  'u6-anfangen': [
+    ['Wann fangen wir an?', 'When do we start?', { fangen: 'start | anfangen', an: 'the “an” of anfangen goes to the end' }],
+    ['Der Kurs fängt um neun Uhr an.', 'The course starts at nine o’clock.', { an: 'the “an” of anfangen goes to the end' }],
+  ],
+  'u6-zusammen-together': [
+    ['Wir lernen zusammen Deutsch.', 'We are learning German together.'],
+    ['Gehen wir zusammen ins Kino?', 'Shall we go to the cinema together?', { ins: 'to the | in + das' }],
+  ],
+  'u6-abholen': [
+    [
+      'Ich hole dich am Bahnhof ab.',
+      'I will pick you up at the station.',
+      { hole: 'pick | ich hole … ab = I pick … up (abholen)', am: 'at the | an + dem', ab: 'up | the “ab” of abholen goes to the end' },
+    ],
+    ['Kannst du mich abholen?', 'Can you pick me up?'],
+  ],
+  'u6-die-bestellung': [
+    ['Ist das Ihre Bestellung?', 'Is this your order?', { das: 'this' }],
+    ['Die Bestellung kommt gleich.', 'The order is coming right away.'],
+  ],
+  'u6-bezahlen': [
+    ['Ich möchte bitte bezahlen.', 'I would like to pay, please.'],
+    ['Kann ich mit Karte bezahlen?', 'Can I pay by card?', { mit: 'by | mit Karte = by card' }],
+  ],
+  'u6-zusammen-together-one-bill': [
+    ['Zahlen Sie zusammen oder getrennt?', 'Are you paying together or separately?', { Zahlen: 'pay | zahlen', getrennt: 'separately' }],
+    [
+      'Zusammen, bitte. Ich lade dich ein.',
+      'Together, please. It’s my treat.',
+      { lade: 'invite | ich lade dich ein = it’s my treat (einladen)', ein: 'the “ein” of einladen goes to the end' },
+    ],
+  ],
+  'u6-getrennt': [
+    ['Wir bezahlen getrennt, bitte.', 'We are paying separately, please.', { getrennt: 'separately' }],
+    ['Die Rechnungen sind getrennt.', 'The bills are separate.'],
+  ],
+  'u6-stimmt-so': [
+    [
+      'Hier sind zwanzig Euro. Stimmt so!',
+      'Here are twenty euros. Keep the change!',
+      { Stimmt: 'is right | Stimmt so! = Keep the change!', so: 'like that | Stimmt so! = Keep the change!' },
+    ],
+    [
+      'Stimmt so, vielen Dank!',
+      'Keep the change, thank you very much!',
+      { Stimmt: 'is right | Stimmt so! = Keep the change!', so: 'like that | Stimmt so! = Keep the change!' },
+    ],
+  ],
+  'u6-das-abendessen': [
+    ['Zum Abendessen gibt es Fisch.', 'There is fish for dinner.', { Zum: 'for (the) | zu + dem', es: 'there | es gibt = there is' }],
+    ['Kommst du zum Abendessen?', 'Are you coming to dinner?', { zum: 'to (the) | zu + dem' }],
+  ],
+  'u6-durstig': [
+    ['Nach dem Sport bin ich durstig.', 'After sport I am thirsty.', { Nach: 'after' }],
+    ['Bist du durstig? Hier ist Wasser.', 'Are you thirsty? Here is water.'],
+  ],
+  'u6-der-spass': [
+    ['Viel Spaß auf der Party!', 'Have fun at the party!', { Viel: 'much | Viel Spaß! = Have fun!', auf: 'at | auf der Party = at the party' }],
+    [
+      'Tanzen macht viel Spaß.',
+      'Dancing is a lot of fun.',
+      { Tanzen: 'dancing', macht: 'makes | Spaß machen = to be fun', viel: 'a lot of' },
+    ],
+  ],
+  'u6-das-kaffeehaus': [
+    ['Das Kaffeehaus ist in Wien.', 'The coffeehouse is in Vienna.'],
+    ['Im Kaffeehaus trinken wir Kaffee.', 'In the coffeehouse we drink coffee.', { Im: 'in the | in + dem' }],
+  ],
+  'u6-bestellen': [
+    ['Ich möchte eine Pizza bestellen.', 'I would like to order a pizza.'],
+    ['Was bestellst du?', 'What are you ordering?'],
+  ],
+  'u6-die-menschen': [
+    ['Viele Menschen sind im Park.', 'Many people are in the park.', { im: 'in the | in + dem' }],
+    ['Die Menschen hier sind freundlich.', 'The people here are friendly.'],
+  ],
+  'u6-sitzt': [
+    ['Er sitzt im Café.', 'He is sitting in the café.', { im: 'in the | in + dem' }],
+    ['Wo sitzt du?', 'Where are you sitting?', { sitzt: 'sit | sitzen, du-form' }],
+  ],
+  'u6-selbst': [
+    ['Ich mache den Kuchen selbst.', 'I am making the cake myself.', { selbst: 'myself | selbst = (one)self' }],
+    ['Das kannst du selbst machen.', 'You can do that yourself.', { Das: 'that', selbst: 'yourself | selbst = (one)self', machen: 'do / make' }],
+  ],
+  'u6-die-selbstbedienung': [
+    ['Hier ist Selbstbedienung.', 'It is self-service here.'],
+    ['Im Café gibt es Selbstbedienung.', 'There is self-service in the café.', { Im: 'in the | in + dem', es: 'there | es gibt = there is' }],
+  ],
+  'u6-voll': [
+    ['Das Kaffeehaus ist heute voll.', 'The coffeehouse is full today.'],
+    ['Mein Glas ist voll.', 'My glass is full.'],
+  ],
+  'u6-die-gerichte': [
+    ['Die Gerichte hier sind lecker.', 'The dishes here are tasty.'],
+    ['Welche Gerichte gibt es heute?', 'Which dishes are there today?', { es: 'there | es gibt = there is' }],
+  ],
+  'u6-die-kneipe': [
+    ['Die Kneipe ist am Abend voll.', 'The pub is full in the evening.', { am: 'in the | an + dem' }],
+    ['Treffen wir uns in der Kneipe?', 'Shall we meet in the pub?', { uns: 'each other | sich treffen = to meet (up)', der: 'the | dative of die' }],
+  ],
 };

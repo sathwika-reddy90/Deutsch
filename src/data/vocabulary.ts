@@ -375,6 +375,153 @@ const UNIT_4_WORDS: WordInput[] = [
   { german: 'Mahlzeit!', note: 'greeting', english: 'meal time (greeting)', pronunciation: 'MAHL-tsyte', category: 'Other', images: ['Waving hand', 'Fork and knife'] },
 ];
 
+// "Alltag und Familie" – the 42 words in the order given. Nachrichten (6, 25) and ergänzen (15, 19)
+// appear twice, as in the list; each card keeps its own English.
+const UNIT_5_WORDS: WordInput[] = [
+  { article: 'die', german: 'Uhrzeit', english: 'time / time of day', pronunciation: 'OOR-tsyte', category: 'Time', images: ['Alarm clock'] },
+  { article: 'das', german: 'Alter', english: 'age', pronunciation: 'AHL-ter', category: 'Other', images: ['Birthday cake'] },
+  { german: 'treffen', note: 'verb', english: 'meet', pronunciation: 'TREF-en', category: 'Other', images: ['Handshake'] },
+  { german: 'duschen', note: 'verb', english: 'take a shower', pronunciation: 'DOO-shen', category: 'Other', images: ['Shower'] },
+  { german: 'besuchen', note: 'verb', english: 'visit', pronunciation: 'beh-ZOO-khen', category: 'Other', images: ['House', 'Waving hand'] },
+  { article: 'die', german: 'Nachrichten', note: 'plural', english: 'news / messages', pronunciation: 'NAHKH-rikh-ten', category: 'Other', images: ['Newspaper', 'Envelope'] },
+  { german: 'lange schlafen', note: 'verb', english: 'sleep late', pronunciation: 'LAHNG-uh SHLAH-fen', category: 'Other', images: ['Sleeping face'] },
+  { german: 'Wie spät ist es?', english: 'what time is it?', pronunciation: 'vee shpayt ist es', category: 'Time', images: ['Watch', 'Red question mark'] },
+  { german: 'aufstehen', note: 'verb', english: 'get up', pronunciation: 'OWF-shtay-en', category: 'Other', images: ['Sunrise'] },
+  { german: 'ordnen', note: 'verb', english: 'arrange / put in order', pronunciation: 'ORT-nen', category: 'Other', images: ['Card index dividers'] },
+  { article: 'die', german: 'Bilder', note: 'plural', english: 'pictures', pronunciation: 'BIL-der', category: 'Objects', images: ['Framed picture', 'Framed picture'] },
+  { german: 'offiziell', note: 'adverb', english: 'officially', pronunciation: 'oh-fee-TSYELL', category: 'Other', images: ['Classical building'] },
+  { german: 'sehen', note: 'verb', english: 'see', pronunciation: 'ZAY-en', category: 'Other', images: ['Eyes'] },
+  { article: 'die', german: 'Eltern', note: 'plural', english: 'parents', pronunciation: 'EL-tern', category: 'Other', images: ['Woman', 'Man'] },
+  { german: 'ergänzen', note: 'verb', english: 'add to / supplement', pronunciation: 'er-GEN-tsen', category: 'Other', images: ['Plus'] },
+  { article: 'der', german: 'Satz', english: 'sentence', pronunciation: 'zahts', category: 'Other', images: ['Memo'] },
+  { german: 'sagt', note: 'verb', english: 'says', pronunciation: 'zahkt', category: 'Other', images: ['Speaking head'] },
+  { german: 'ankreuzen', note: 'verb', english: 'cross / tick a box', pronunciation: 'AHN-kroy-tsen', category: 'Other', images: ['Ballot box with ballot'] },
+  { german: 'ergänzen', note: 'verb', english: 'add / supplement', pronunciation: 'er-GEN-tsen', category: 'Other', images: ['Puzzle piece'] },
+  { german: 'bleiben', note: 'verb', english: 'remain / stay', pronunciation: 'BLY-ben', category: 'Other', images: ['Couch and lamp'] },
+  { german: 'beschreibt', note: 'verb', english: 'describes', pronunciation: 'beh-SHRYPT', category: 'Other', images: ['Writing hand'] },
+  { german: 'ledig', note: 'adjective', english: 'single / unmarried', pronunciation: 'LAY-dikh', category: 'Other', images: ['Person standing'] },
+  { article: 'das', german: 'Motorrad', english: 'motorcycle', pronunciation: 'MOH-tor-raht', category: 'Travel', images: ['Motorcycle'] },
+  { article: 'die', german: 'Geige', english: 'violin', pronunciation: 'GY-guh', category: 'Objects', images: ['Violin'] },
+  { article: 'die', german: 'Nachrichten', note: 'plural', english: 'news', pronunciation: 'NAHKH-rikh-ten', category: 'Other', images: ['Television'] },
+  { article: 'der', german: 'Termin', english: 'appointment', pronunciation: 'ter-MEEN', category: 'Time', images: ['Calendar'] },
+  { german: 'können', note: 'modal verb', english: 'can / be able to', pronunciation: 'KÖN-en', category: 'Other', images: ['Flexed biceps'] },
+  { german: 'würde', note: 'verb', english: 'would', pronunciation: 'VÜR-duh', category: 'Other', images: ['Thought balloon'] },
+  { german: 'wollen', note: 'modal verb', english: 'want', pronunciation: 'VOL-en', category: 'Other', images: ['Smiling face with heart-eyes'] },
+  { article: 'die', german: 'Hausaufgaben', note: 'plural', english: 'homework', pronunciation: 'HOWSS-owf-gah-ben', category: 'Objects', images: ['Notebook', 'Pencil'] },
+  { german: 'leider', note: 'adverb', english: 'unfortunately', pronunciation: 'LY-der', category: 'Other', images: ['Pensive face'] },
+  { german: 'fast', note: 'adverb', english: 'almost', pronunciation: 'fahst', category: 'Other', images: ['Pinching hand'] },
+  { german: 'gerade', note: 'adverb', english: 'right now', pronunciation: 'geh-RAH-duh', category: 'Time', images: ['Stopwatch'] },
+  { article: 'der', german: 'Berg', english: 'mountain', pronunciation: 'bairk', category: 'Places', images: ['Mountain'] },
+  { german: 'nächste Woche', english: 'next week', pronunciation: 'NEKHS-tuh VOKH-uh', category: 'Time', images: ['Tear-off calendar', 'Right arrow'] },
+  { german: 'schade', english: 'too bad / what a pity', pronunciation: 'SHAH-duh', category: 'Other', images: ['Disappointed face'] },
+  { article: 'die', german: 'Kneipe', english: 'pub', pronunciation: 'KNY-puh', category: 'Places', images: ['Beer mug'] },
+  { german: 'vereinbaren', note: 'verb', english: 'arrange / make an appointment', pronunciation: 'fer-INE-bah-ren', category: 'Time', images: ['Handshake', 'Calendar'] },
+  { article: 'die', german: 'Rollenkarte', english: 'role card', pronunciation: 'ROL-en-kar-tuh', category: 'Objects', images: ['Performing arts'] },
+  { german: 'spielen', note: 'verb', english: 'play', pronunciation: 'SHPEE-len', category: 'Other', images: ['Soccer ball'] },
+  { article: 'das', german: 'Büro', english: 'office', pronunciation: 'bü-ROH', category: 'Places', images: ['Desktop computer'] },
+  { article: 'die', german: 'Verspätung', english: 'delay', pronunciation: 'fer-SHPAY-toong', category: 'Travel', images: ['Hourglass not done'] },
+];
+
+// "Zeit mit Freunden" – the 49 words in the order given. "zusammen" (31, 35) appears twice, as in the
+// list: #35 sits with "getrennt" (paying), so it is "together (one bill)" and gets its own id.
+const UNIT_6_WORDS: WordInput[] = [
+  { article: 'der', german: 'Geburtstag', english: 'birthday', pronunciation: 'geh-BOORTS-tahk', category: 'Time', images: ['Birthday cake'] },
+  { article: 'die', german: 'Einladung', english: 'invitation', pronunciation: 'INE-lah-doong', category: 'Other', images: ['Envelope', 'Balloon'] },
+  { article: 'das', german: 'Fenster', english: 'window', pronunciation: 'FEN-ster', category: 'Objects', images: ['Window'] },
+  { german: 'glauben', note: 'verb', english: 'to believe', pronunciation: 'GLOW-ben', category: 'Other', images: ['Thinking face'] },
+  { german: 'vielleicht', note: 'adverb', english: 'maybe', pronunciation: 'fee-LYKHT', category: 'Other', images: ['Face with raised eyebrow'] },
+  { article: 'das', german: 'Klettern', english: 'climbing', pronunciation: 'KLET-tern', category: 'Other', images: ['Person climbing'] },
+  { article: 'das', german: 'Fahrrad', english: 'bicycle', pronunciation: 'FAHR-raht', category: 'Travel', images: ['Bicycle'] },
+  { german: 'feiern', note: 'verb', english: 'to celebrate', pronunciation: 'FY-ern', category: 'Other', images: ['Party popper'] },
+  {
+    article: 'die',
+    german: 'Freizeitaktivitäten',
+    note: 'plural',
+    english: 'leisure activities',
+    pronunciation: 'FRY-tsyte-ahk-tee-vee-TAY-ten',
+    category: 'Other',
+    images: ['Person biking', 'Person swimming', 'Soccer ball', 'Guitar'],
+  },
+  { article: 'die', german: 'Überraschung', english: 'surprise', pronunciation: 'ü-ber-RAH-shoong', category: 'Other', images: ['Astonished face'] },
+  { german: 'Alles klar?', english: 'everything okay?', pronunciation: 'AHL-es klahr', category: 'Other', images: ['Ok hand'] },
+  { article: 'die', german: 'Idee', english: 'idea', pronunciation: 'ee-DAY', category: 'Other', images: ['Light bulb'] },
+  { article: 'die', german: 'Eltern', note: 'plural', english: 'parents', pronunciation: 'EL-tern', category: 'Other', images: ['Woman', 'Man'] },
+  { german: 'Klingt gut.', english: 'sounds good', pronunciation: 'klingt goot', category: 'Other', images: ['Thumbs up'] },
+  // "besonders" is the adverb (especially); "special" alone would be "besonder-".
+  { german: 'besonders', note: 'adverb', english: 'special / especially', pronunciation: 'beh-ZON-ders', category: 'Other', images: ['Sparkles'] },
+  { german: 'versuchen', note: 'verb', english: 'to try', pronunciation: 'fer-ZOO-khen', category: 'Other', images: ['Bullseye'] },
+  { article: 'das', german: 'Thema', english: 'topic / subject', pronunciation: 'TAY-mah', category: 'Other', images: ['Bookmark tabs'] },
+  { article: 'das', german: 'Geschenk', english: 'gift', pronunciation: 'geh-SHENK', category: 'Objects', images: ['Wrapped gift'] },
+  { german: 'beginnt', note: 'verb', english: 'begins', pronunciation: 'beh-GINT', category: 'Time', images: ['Play button'] },
+  {
+    article: 'der',
+    german: 'Treffpunkt',
+    english: 'meeting point',
+    pronunciation: 'TREF-poonkt',
+    category: 'Places',
+    images: ['Round pushpin', 'Busts in silhouette'],
+  },
+  { article: 'der', german: 'Ausflug', english: 'trip / excursion', pronunciation: 'OWS-flook', category: 'Travel', images: ['Camping'] },
+  { article: 'das', german: 'Sammeln', english: 'collecting', pronunciation: 'ZAHM-eln', category: 'Other', images: ['Spiral shell', 'Coin'] },
+  { article: 'der', german: 'Regen', english: 'rain', pronunciation: 'RAY-gen', category: 'Other', images: ['Cloud with rain'] },
+  { german: 'schicken', note: 'verb', english: 'to send', pronunciation: 'SHIK-en', category: 'Other', images: ['Outbox tray'] },
+  { article: 'die', german: 'Nachricht', english: 'message', pronunciation: 'NAHKH-rikht', category: 'Other', images: ['Mobile phone with arrow'] },
+  { article: 'die', german: 'Achtung', english: 'attention / caution', pronunciation: 'AHKH-toong', category: 'Other', images: ['Warning'] },
+  { article: 'die', german: 'Küche', english: 'kitchen', pronunciation: 'KÜ-khuh', category: 'Places', images: ['Pot of food', 'Cooking'] },
+  { german: 'gesund', note: 'adjective', english: 'healthy', pronunciation: 'geh-ZOONT', category: 'Food', images: ['Green salad'] },
+  { german: 'Bilden Sie Sätze.', note: 'formal', english: 'make sentences', pronunciation: 'BIL-den zee ZET-suh', category: 'Other', images: ['Pencil', 'Memo'] },
+  { german: 'anfangen', note: 'verb', english: 'to begin / start', pronunciation: 'AHN-fahng-en', category: 'Time', images: ['Rocket'] },
+  { german: 'zusammen', note: 'adverb', english: 'together', pronunciation: 'tsoo-ZAHM-en', category: 'Other', images: ['People hugging'] },
+  { german: 'abholen', note: 'verb', english: 'to pick up', pronunciation: 'AHP-hoh-len', category: 'Travel', images: ['Automobile', 'Waving hand'] },
+  {
+    article: 'die',
+    german: 'Bestellung',
+    english: 'order (e.g. in a restaurant)',
+    pronunciation: 'beh-SHTEL-oong',
+    category: 'Food',
+    images: ['Clipboard', 'Fork and knife'],
+  },
+  { german: 'bezahlen', note: 'verb', english: 'to pay', pronunciation: 'beh-TSAH-len', category: 'Other', images: ['Credit card'] },
+  { german: 'zusammen', note: 'adverb', english: 'together (one bill)', pronunciation: 'tsoo-ZAHM-en', category: 'Other', images: ['Receipt'] },
+  { german: 'getrennt', note: 'adverb', english: 'separate / separately', pronunciation: 'geh-TRENT', category: 'Other', images: ['Receipt', 'Receipt'] },
+  { german: 'Stimmt so.', english: 'keep the change', pronunciation: 'shtimt zoh', category: 'Other', images: ['Coin', 'Palms up together'] },
+  { article: 'das', german: 'Abendessen', english: 'dinner', pronunciation: 'AH-bent-ess-en', category: 'Food', images: ['Crescent moon', 'Fork and knife'] },
+  { german: 'durstig', note: 'adjective', english: 'thirsty', pronunciation: 'DOOR-stikh', category: 'Food', images: ['Cup with straw'] },
+  { article: 'der', german: 'Spaß', english: 'fun', pronunciation: 'shpahs', category: 'Other', images: ['Grinning squinting face'] },
+  { article: 'das', german: 'Kaffeehaus', english: 'coffeehouse', pronunciation: 'KAH-fay-howss', category: 'Places', images: ['Hot beverage', 'Shortcake'] },
+  { german: 'bestellen', note: 'verb', english: 'to order', pronunciation: 'beh-SHTEL-en', category: 'Food', images: ['Person raising hand'] },
+  {
+    article: 'die',
+    german: 'Menschen',
+    note: 'plural',
+    english: 'people',
+    pronunciation: 'MEN-shen',
+    category: 'Other',
+    images: ['Man', 'Woman', 'Boy', 'Girl'],
+  },
+  { german: 'sitzt', note: 'verb', english: 'sits', pronunciation: 'zitst', category: 'Other', images: ['Chair'] },
+  { german: 'selbst', note: 'pronoun', english: 'self / oneself', pronunciation: 'zelpst', category: 'Other', images: ['Mirror'] },
+  {
+    article: 'die',
+    german: 'Selbstbedienung',
+    english: 'self-service',
+    pronunciation: 'ZELPST-beh-dee-noong',
+    category: 'Food',
+    images: ['Takeout box', 'Cup with straw'],
+  },
+  { german: 'voll', note: 'adjective', english: 'full', pronunciation: 'fol', category: 'Other', images: ['Battery'] },
+  {
+    article: 'die',
+    german: 'Gerichte',
+    note: 'plural',
+    english: 'dishes / meals',
+    pronunciation: 'geh-RIKH-tuh',
+    category: 'Food',
+    images: ['Spaghetti', 'Curry rice', 'Shallow pan of food', 'Steaming bowl'],
+  },
+  { article: 'die', german: 'Kneipe', english: 'pub', pronunciation: 'KNY-puh', category: 'Places', images: ['Clinking beer mugs'] },
+];
+
 // German letter names: [letter, as it sounds to an English speaker (shown), German spelling (spoken)].
 // German voices read a bare capital "A" as "Großbuchstabe A" and "Veh" as "Feh", so audio uses the
 // German spelling – the same sound the voice gives the letter itself.
@@ -436,7 +583,7 @@ export const spokenText = (word: VocabWord) => word.say ?? germanTerm(word);
 export const imageFile = (source: string) => `${slugify(source)}.png`;
 
 // ---------------------------------------------------------------- units
-// Add future units here (Unit 5, 6 …). Alphabets is number 0 so those numbers stay free.
+// Add future units here (Unit 7, 8 …). Alphabets is number 0 so those numbers stay free.
 const UNIT_DEFINITIONS: {
   number: number;
   name?: string;
@@ -449,6 +596,8 @@ const UNIT_DEFINITIONS: {
   { number: 2, title: 'German Vocabulary', words: UNIT_2_WORDS },
   { number: 3, title: 'German Vocabulary', words: UNIT_3_WORDS },
   { number: 4, title: 'Guten Appetit!', words: UNIT_4_WORDS },
+  { number: 5, title: 'Alltag und Familie', words: UNIT_5_WORDS },
+  { number: 6, title: 'Zeit mit Freunden', words: UNIT_6_WORDS },
   { number: 0, name: 'Alphabets', tag: 'A–Z', noun: 'letter', title: 'German Alphabet', words: ALPHABET_WORDS },
 ];
 

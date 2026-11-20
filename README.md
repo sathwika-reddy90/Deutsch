@@ -1,8 +1,9 @@
 # Deutsch Lernen 🇩🇪
 
 German vocabulary flashcards, organised in units — one page with a unit selector
-(**Unit 1 · Unit 2 · Unit 3 · Unit 4 · Alphabets**). Unit 1 has 61 words and phrases, Unit 2
-has 68, Unit 3 has 28, Unit 4 ("Guten Appetit!") has 43, and Alphabets has the letters A–Z.
+(**Unit 1 · Unit 2 · Unit 3 · Unit 4 · Unit 5 · Unit 6 · Alphabets**). Unit 1 has 61 words and phrases, Unit 2
+has 68, Unit 3 has 28, Unit 4 ("Guten Appetit!") has 43, Unit 5 ("Alltag und Familie") has 42,
+Unit 6 ("Zeit mit Freunden") has 49, and Alphabets has the letters A–Z.
 Each card shows the English meaning
 and an illustration and flips in 3D to reveal the German word with its article
 (der/die/das), a pronunciation guide, and two audio buttons that speak the full German
@@ -22,12 +23,14 @@ const UNIT_DEFINITIONS = [
   { number: 2, title: 'German Vocabulary', words: UNIT_2_WORDS }, // the 68 words
   { number: 3, title: 'German Vocabulary', words: UNIT_3_WORDS }, // the 28 words
   { number: 4, title: 'Guten Appetit!', words: UNIT_4_WORDS }, // the 43 words
+  { number: 5, title: 'Alltag und Familie', words: UNIT_5_WORDS }, // the 42 words
+  { number: 6, title: 'Zeit mit Freunden', words: UNIT_6_WORDS }, // the 49 words
   { number: 0, name: 'Alphabets', tag: 'A–Z', noun: 'letter', title: 'German Alphabet', words: ALPHABET_WORDS },
 ];
 ```
 
-To add Unit 5: create `UNIT_5_WORDS` (same entry format as Unit 3) and add
-`{ number: 5, title: '…', words: UNIT_5_WORDS }`. A unit with an empty
+To add Unit 7: create `UNIT_7_WORDS` (same entry format as Unit 6) and add
+`{ number: 7, title: '…', words: UNIT_7_WORDS }`. A unit with an empty
 `words` array shows "Coming Soon". Nothing else needs changing — the selector, word counts,
 categories, search, Speaking Practice and progress all follow the selected unit
 (`DEFAULT_UNIT` = 3 is selected when the site opens).
@@ -49,7 +52,7 @@ spoken (`say`: "Fau", "Weh", "Jott", "Ix", "Ypsilon", "Zett"). German voices rea
 "A" as "Großbuchstabe A" and "Veh" as "Feh", so audio never uses either. The front shows the
 letter, with "Aa" in the picture panel. Speaking Practice skips the English audio for letters
 (it would be the English letter name): letter shown → 3-second pause → flip → German ×5.
-Alphabets uses unit number 0, so Unit 5, 6 … stay free.
+Alphabets uses unit number 0, so Unit 7, 8 … stay free.
 
 ## Theme
 

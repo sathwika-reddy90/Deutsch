@@ -19,7 +19,7 @@
   align-items: center;
   gap: 8px;
   min-height: 40px;
-  padding: 0 14px;
+  padding: 0 12px;
   border: 1px solid transparent;
   border-radius: 999px;
   background: transparent;
@@ -73,12 +73,16 @@
   }
 }
 
-/* Phones: full-width segmented control, three units per row */
+/* Phones: full-width segmented control, three units per row (six columns, two each) */
 @media (max-width: 640px) {
   .unit-selector__list {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(6, minmax(0, 1fr));
     width: 100%;
+  }
+
+  .unit-selector__list > li {
+    grid-column: span 2;
   }
 
   .unit-tab {
@@ -95,12 +99,15 @@
     font-size: 0.64rem;
   }
 
-  /* A lone tab on the last row spans the full width; of two, the second takes the rest. */
-  .unit-selector__list > li:last-child:nth-child(3n + 1) {
+  /* The last tab (Alphabets, the longest label) gets a row of its own. Units left on a short
+     row share it: one unit spans the row, two units take half each. */
+  .unit-selector__list > li:last-child,
+  .unit-selector__list > li:nth-last-child(2):nth-child(3n + 1) {
     grid-column: 1 / -1;
   }
 
-  .unit-selector__list > li:last-child:nth-child(3n + 2) {
-    grid-column: span 2;
+  .unit-selector__list > li:nth-last-child(2):nth-child(3n + 2),
+  .unit-selector__list > li:nth-last-child(3):nth-child(3n + 1) {
+    grid-column: span 3;
   }
 }
