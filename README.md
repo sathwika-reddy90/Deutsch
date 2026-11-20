@@ -184,6 +184,25 @@ synthesis the card shows "Audio is not available in this browser."
 Only one utterance ever plays: any Listen/Slow Listen click cancels whatever is speaking
 (also normal ⇄ slow on the same card), and repeated clicks on the playing button are ignored.
 
+### Phones (iOS Safari, Android Chrome)
+
+Mobile speech engines are stricter than desktop ones, so `useGermanSpeech` follows these rules:
+
+- `speechSynthesis.speak()` is called **synchronously inside the tap/click handler** – never after an
+  `await` or a timer. iOS Safari silently ignores speech that isn't started by a user gesture until
+  one has been; after that, Speaking Practice can continue from its timers.
+- `cancel()` is only called when something is actually speaking, queued or paused – a needless
+  `cancel()` right before `speak()` can make mobile engines drop the new utterance.
+- The voice is looked up from a fresh `getVoices()` for every utterance (voices load late on phones:
+  `voiceschanged` plus a short poll), on-device voices are preferred over network ones, and German
+  always sets `lang = "de-DE"`, so the browser can fall back to its own German voice.
+- An utterance must really start: if it is dropped (no `start`, engine idle) or interrupted by the
+  engine itself, it is retried once; if it still doesn't play, or `onerror` reports a problem, a small
+  message explains it (no German voice, blocked, no network, audio busy, …) and the button returns to
+  "Listen" – it is never shown as played. No microphone permission is ever requested.
+- With no German voice installed, a one-time warning explains how to add one. On iPhone/iPad the first
+  tap also shows a one-time tip about Silent Mode and volume.
+
 ## Keyboard
 
 - `Enter` on the current card (focused, or nothing focused): first press reveals the German side, the

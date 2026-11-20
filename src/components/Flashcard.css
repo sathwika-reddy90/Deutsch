@@ -509,8 +509,16 @@
 /* Bigger touch targets on phones and tablets */
 @media (pointer: coarse) {
   .sentence-audio {
+    position: relative;
     width: 32px;
     height: 30px;
+  }
+
+  /* 44px-tall tap area without moving anything (only vertically: 🔊 and 🐢 sit 1px apart). */
+  .sentence-audio::after {
+    content: '';
+    position: absolute;
+    inset: -7px 0;
   }
 
   .card__example-audio {

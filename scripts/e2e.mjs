@@ -348,7 +348,8 @@ const DEFAULT_VOICES = [
   { name: 'Thomas', lang: 'fr-FR', localService: true, default: false },
 ];
 
-const FAKE_SPEECH = ({ voices, autoFinishMs = 0 }) => {
+// behavior: 'ok' | 'drop' (speak() silently ignored, e.g. no user gesture on iOS) | 'error:<code>'.
+const FAKE_SPEECH = ({ voices, autoFinishMs = 0, behavior = 'ok' }) => {
   const calls = [];
   window.__autoFinishMs = autoFinishMs;
   let current = null;
@@ -369,8 +370,14 @@ const FAKE_SPEECH = ({ voices, autoFinishMs = 0 }) => {
         voice: u.voice?.name ?? null,
         voiceLang: u.voice?.lang ?? null,
       });
+      if (behavior === 'drop') return;
+      if (behavior.startsWith('error:')) {
+        setTimeout(() => u.onerror?.({ error: behavior.slice(6) }), 20);
+        return;
+      }
       current = u;
       synth.speaking = true;
+      setTimeout(() => current === u && u.onstart?.({}), 0);
       if (window.__autoFinishMs) setTimeout(() => current === u && window.__finishSpeech(), window.__autoFinishMs);
     },
     cancel() {
@@ -765,7 +772,7 @@ await step('rapid repeated clicks never overlap; previous speech is cancelled', 
   await h.listen(0).click();
   let calls = await h.speechCalls();
   assert.equal(calls.filter((c) => c.type === 'speak').length, 1, 'only one utterance for rapid clicks');
-  assert.equal(calls[0].type, 'cancel', 'cancel() runs before speak()');
+  assert.equal(calls[0].type, 'speak', 'nothing was playing: no needless cancel() before speak()');
   // Start another word while the first is speaking.
   await h.frontFlip(1).click();
   await page.waitForTimeout(650);
@@ -801,9 +808,9 @@ await step('Slow Listen: same term, de-DE, same voice, rate 0.55, "Speaking slow
   await page.evaluate(() => (window.__speechCalls.length = 0));
   await slow.click();
   const calls = await h.speechCalls();
-  assert.deepEqual(calls.map((c) => c.type), ['cancel', 'speak']);
+  assert.deepEqual(calls.map((c) => c.type), ['speak'], 'spoken at once, inside the click');
   assert.deepEqual(
-    { text: calls[1].text, lang: calls[1].lang, rate: calls[1].rate, pitch: calls[1].pitch, voice: calls[1].voice },
+    { text: calls[0].text, lang: calls[0].lang, rate: calls[0].rate, pitch: calls[0].pitch, voice: calls[0].voice },
     { text: 'der Platz', lang: 'de-DE', rate: 0.55, pitch: 1, voice: 'Anna' },
   );
   assert.match(await slow.innerText(), /Speaking slowly…/);
@@ -820,7 +827,7 @@ await step('switching Listen ⇄ Slow Listen cancels the other – never both at
   await h.slowListen(0).click();
   await page.waitForTimeout(150);
   let calls = await h.speechCalls();
-  assert.deepEqual(calls.map((c) => c.type), ['cancel', 'speak', 'cancel', 'speak']);
+  assert.deepEqual(calls.map((c) => c.type), ['speak', 'cancel', 'speak'], 'the playing one is cancelled, then the new one speaks');
   assert.deepEqual(calls.filter((c) => c.type === 'speak').map((c) => c.rate), [0.85, 0.55]);
   assert.match(await h.listen(0).innerText(), /^Listen$/m);
   assert.match(await h.slowListen(0).innerText(), /Speaking slowly…/);
@@ -926,7 +933,7 @@ await step('ONE click starts the lesson for the cards shown (All Words → 28) a
   assert.equal(await h.dock.textContent(), '1 / 28');
   assert.equal(await page.locator('.card-slot[aria-current="true"] .card__english').textContent(), 'Place');
   const calls = await h.speechCalls();
-  assert.equal(calls[0].type, 'cancel', 'speechSynthesis.cancel() before the lesson');
+  assert.equal(calls[0].type, 'speak', 'nothing was playing: the lesson speaks at once, inside the click');
   const s1 = await speaks();
   assert.equal(s1.length, 1);
   assert.deepEqual([s1[0].text, s1[0].lang, s1[0].rate, s1[0].voice], ['place', 'en-US', 1, 'Samantha']);
@@ -2867,6 +2874,45 @@ await step('voice detection adapts to other computers (no hard-coded names)', as
     else assert.match(note, /No German voice found/);
     await p.context().close();
   }
+});
+
+await step('phone-style failures: dropped speech is retried once, then reported; engine errors explained', async () => {
+  const tapListen = async (p) => {
+    await p.locator('.card__face--front .card__flip').first().click();
+    await p.waitForTimeout(650);
+    await p.locator('.audio-button--normal').first().click();
+  };
+  // speak() silently ignored (as iOS does without a user gesture): one retry, then a message.
+  let p = await openApp({ init: FAKE_SPEECH, initArg: { behavior: 'drop' } });
+  await tapListen(p);
+  assert.match(await p.locator('.audio-button--normal').first().innerText(), /Speaking…/);
+  await p.waitForFunction(() => document.querySelector('[data-testid="speech-notice"]'), null, { timeout: 5000 });
+  assert.match(await p.getByTestId('speech-notice').innerText(), /audio didn’t start/);
+  assert.match(await p.locator('.audio-button--normal').first().innerText(), /^Listen$/m, 'never shown as played');
+  assert.equal((await p.evaluate(() => window.__speechCalls)).filter((c) => c.type === 'speak').length, 2, 'one retry');
+  await p.getByRole('button', { name: 'Dismiss audio message' }).click();
+  assert.equal(await p.getByTestId('speech-notice').count(), 0);
+  await p.context().close();
+  // Engine errors get a specific explanation.
+  for (const [code, text] of [
+    ['language-unavailable', /no German voice/],
+    ['not-allowed', /blocked the audio/],
+    ['synthesis-failed', /could not be played.*synthesis-failed/],
+  ]) {
+    p = await openApp({ init: FAKE_SPEECH, initArg: { behavior: `error:${code}` } });
+    await tapListen(p);
+    await p.waitForTimeout(150);
+    assert.match(await p.getByTestId('speech-notice').innerText(), text, code);
+    assert.match(await p.locator('.audio-button--normal').first().innerText(), /^Listen$/m);
+    await p.context().close();
+  }
+  // No German voice installed: still speaks German (de-DE, browser's voice) and says why it may sound wrong.
+  p = await openApp({ init: FAKE_SPEECH, initArg: { voices: [{ name: 'Samantha', lang: 'en-US', localService: true, default: true }] } });
+  await tapListen(p);
+  const speak = (await p.evaluate(() => window.__speechCalls)).find((c) => c.type === 'speak');
+  assert.deepEqual([speak.text, speak.lang, speak.voice], ['der Platz', 'de-DE', null]);
+  assert.match(await p.getByTestId('speech-notice').innerText(), /No German voice found on this device/);
+  await p.context().close();
 });
 
 await step('without speech support: message shown, cards still work', async () => {

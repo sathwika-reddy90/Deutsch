@@ -5,6 +5,7 @@ import { Header } from './components/Header';
 import { NavigationControls } from './components/NavigationControls';
 import { SearchBar } from './components/SearchBar';
 import { SpeakingPractice } from './components/SpeakingPractice';
+import { SpeechNotice } from './components/SpeechNotice';
 import { Toggle } from './components/Toggle';
 import { UnitHeader } from './components/UnitHeader';
 import { UnitTest } from './components/UnitTest';
@@ -433,6 +434,8 @@ export function UnitWorkspace({ unit, words, unitNav, suggestedUnit, onSelectUni
           resetDisabled={isEmptyUnit}
         />
       )}
+
+      <SpeechNotice notice={speech.notice} onDismiss={speech.dismissNotice} />
 
       <p className="sr-only" aria-live="polite">
         {announcement}
